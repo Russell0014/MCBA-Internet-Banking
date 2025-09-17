@@ -1,13 +1,18 @@
 using MCBA.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<DatabaseContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(DatabaseContext)));
+
+    // Enable lazy loading.
+    options.UseLazyLoadingProxies();
+});
+
 builder.Services.AddControllersWithViews();
-
-builder.Services.AddDbContext<BankDatabaseContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 
 var app = builder.Build();
 
@@ -26,9 +31,11 @@ app.UseAuthorization();
 
 app.MapStaticAssets();
 
+app.MapDefaultControllerRoute().WithStaticAssets();
+
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+        "default",
+        "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 

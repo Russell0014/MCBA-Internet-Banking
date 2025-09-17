@@ -1,19 +1,18 @@
-using Microsoft.EntityFrameworkCore;
 using MCBA.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace MCBA.Data
+namespace MCBA.Data;
+
+public class DatabaseContext : DbContext
 {
-    public class DatabaseContext : DbContext
+    public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {
-        public DatabaseContext(DbContextOptions<DatabaseContext> options)
-            : base(options) { }
-
-        public DbSet<Customer> Customers { get; set; } = null!;
-        public DbSet<Login> Logins { get; set; } = null!;
-        public DbSet<Account> Accounts { get; set; } = null!;
-        public DbSet<Transaction> Transactions { get; set; } = null!;
-        public DbSet<BillPay> BillPays { get; set; } = null!;
-        public DbSet<Payee> Payees { get; set; } = null!;
-        
     }
+
+    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Login> Logins { get; set; }
+    public DbSet<Account> Accounts { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<BillPay> BillPays { get; set; }
+    public DbSet<Payee> Payees { get; set; }
 }
