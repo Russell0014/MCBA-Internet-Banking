@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using MCBA.Models;
+using Microsoft.Extensions.Logging;
 
 namespace MCBA.Controllers;
 
