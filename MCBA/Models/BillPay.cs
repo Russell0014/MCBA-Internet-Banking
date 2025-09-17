@@ -11,7 +11,7 @@ public enum PeriodType
 
 public class BillPay
 {
-    public int BillId { get; set; }
+    public int BillPayId { get; set; }
 
     [ForeignKey(nameof(Account))] public int AccountNumber { get; set; }
     public virtual Account Account { get; set; }
@@ -19,7 +19,9 @@ public class BillPay
     [ForeignKey(nameof(Payee))] public int PayeeId { get; set; }
     public virtual Payee Payee { get; set; }
 
-    [DataType(DataType.Currency)] public decimal Amount { get; set; }
+    [Column(TypeName = "money")]
+    [DataType(DataType.Currency)]
+    public decimal Amount { get; set; }
 
     public DateTime ScheduleTimeUtc { get; set; }
 
