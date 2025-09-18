@@ -14,9 +14,12 @@ public class Account
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
     [Display(Name = "Account Number")]
+    [RegularExpression(@"^\d{4}$", ErrorMessage = "Must be exactly 4 digits.")]
     public int AccountNumber { get; set; }
 
-    [Display(Name = "Type")] public AccountType AccountType { get; set; }
+    [Display(Name = "Type")]
+    [EnumDataType(typeof(AccountType), ErrorMessage = "Invalid account type.")]
+    public AccountType AccountType { get; set; }
 
     public int CustomerId { get; set; }
     public virtual Customer Customer { get; set; }

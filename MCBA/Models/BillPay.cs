@@ -21,6 +21,7 @@ public class BillPay
 
     [Column(TypeName = "money")]
     [DataType(DataType.Currency)]
+    [Range(0.01, double.MaxValue, ErrorMessage = "Must be a positive value.")]
     public decimal Amount { get; set; }
 
     public DateTime ScheduleTimeUtc { get; set; }

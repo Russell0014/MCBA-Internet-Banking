@@ -16,6 +16,8 @@ public class Transaction
 {
     public int TransactionId { get; set; }
 
+    [Display(Name = "Transaction Type")]
+    [EnumDataType(typeof(TransactionType), ErrorMessage = "Invalid transaction type.")]
     public TransactionType TransactionType { get; set; }
 
     [ForeignKey(nameof(Account))] public int AccountNumber { get; set; }
@@ -28,6 +30,7 @@ public class Transaction
 
     [Column(TypeName = "money")]
     [DataType(DataType.Currency)]
+    [Range(0.01, double.MaxValue, ErrorMessage = "Must be a positive value.")]
     public decimal Amount { get; set; }
 
     [StringLength(30)] public string? Comment { get; set; }
