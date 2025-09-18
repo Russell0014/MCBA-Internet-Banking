@@ -18,7 +18,7 @@ public class SeedData
 
         var settings = new JsonSerializerSettings
         {
-            DateFormatString = "dd/MM/yyyy",
+            DateFormatString = "dd/MM/yyyy hh:mm:ss tt",
             Converters = { new AccountTypeConverter() }
         };
 
@@ -27,6 +27,26 @@ public class SeedData
         if (context.Customers.Any())
             return;
 
-        Console.WriteLine(JsonConvert.SerializeObject(customers, Formatting.Indented));
+        // Sets TransactionType to Deposit and calculates balances
+        foreach (var customer in customers)
+        foreach (var account in customer.Accounts)
+        {
+            decimal balance = 0;
+            foreach (var transaction in account.Transactions)
+            {
+                transaction.TransactionType = TransactionType.Deposit;
+                balance += transaction.Amount;
+            }
+
+            account.Balance = balance;
+        }
+
+        // Adds to db context
+        foreach (var customer in customers) context.Customers.Add(customer);
+
+        // Save changes to the database
+        context.SaveChanges();
+
+        Console.WriteLine($"Successfully seeded {customers.Length} customers to the database.");
     }
 }

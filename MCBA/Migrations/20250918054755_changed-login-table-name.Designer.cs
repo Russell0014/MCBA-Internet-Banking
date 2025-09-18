@@ -4,6 +4,7 @@ using MCBA.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MCBA.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250918054755_changed-login-table-name")]
+    partial class changedlogintablename
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,10 +136,9 @@ namespace MCBA.Migrations
 
                     b.HasKey("LoginId");
 
-                    b.HasIndex("CustomerId")
-                        .IsUnique();
+                    b.HasIndex("CustomerId");
 
-                    b.ToTable("Logins");
+                    b.ToTable("Login");
                 });
 
             modelBuilder.Entity("MCBA.Models.Payee", b =>
@@ -251,8 +253,8 @@ namespace MCBA.Migrations
             modelBuilder.Entity("MCBA.Models.Login", b =>
                 {
                     b.HasOne("MCBA.Models.Customer", "Customer")
-                        .WithOne("Login")
-                        .HasForeignKey("MCBA.Models.Login", "CustomerId")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -284,9 +286,6 @@ namespace MCBA.Migrations
             modelBuilder.Entity("MCBA.Models.Customer", b =>
                 {
                     b.Navigation("Accounts");
-
-                    b.Navigation("Login")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
