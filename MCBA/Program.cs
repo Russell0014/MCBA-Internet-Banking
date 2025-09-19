@@ -1,4 +1,5 @@
 using MCBA.Data;
+using MCBA.Filters;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,8 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddControllersWithViews();
+// Global authorisation check
+builder.Services.AddControllersWithViews(options => options.Filters.Add(new AuthorizeCustomerAttribute()));
 
 var app = builder.Build();
 
