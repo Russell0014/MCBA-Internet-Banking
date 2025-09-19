@@ -5,12 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using SimpleHashing.Net;
 
 
-// Bonus Material: Implement global authorisation check.
-//[AllowAnonymous]
 namespace MCBA.Controllers;
 
 [AllowAnonymous]
-[Route("/Login")]
+[Route("/")]
 public class LoginController : Controller
 {
     private static readonly ISimpleHash SSimpleHash = new SimpleHash();
@@ -34,9 +32,16 @@ public class LoginController : Controller
             return View(new Login { LoginId = loginId });
         }
 
+        var id = HttpContext.Session.GetInt32("CustomerId");
+
+        // Checks if user is already logged in
+        if (id != null)
+        {
+            return RedirectToAction("Index", "Customer");
+        }
+        
         // Login customer.
-        HttpContext.Session.SetInt32(nameof(Customer.CustomerId), login.CustomerId);
-        HttpContext.Session.SetString(nameof(Customer.Name), login.Customer.Name);
+        HttpContext.Session.SetInt32("CustomerId", login.CustomerId);
 
         return RedirectToAction("Index", "Customer");
     }
@@ -47,6 +52,6 @@ public class LoginController : Controller
         // Logout customer.
         HttpContext.Session.Clear();
 
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("Login", "Login");
     }
 }

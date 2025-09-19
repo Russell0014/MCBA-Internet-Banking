@@ -3,7 +3,6 @@ using MCBA.Filters;
 using MCBA.Models;
 using Microsoft.AspNetCore.Mvc;
 
-// Can add authorize attribute to controllers.
 namespace MCBA.Controllers;
 
 public class CustomerController : Controller
@@ -26,5 +25,4 @@ public class CustomerController : Controller
         return View(customer);
     }
 
-    public async Task<IActionResult> Deposit(int id) => View(await _context.Accounts.FindAsync(id));
 }
