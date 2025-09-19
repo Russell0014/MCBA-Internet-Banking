@@ -3,27 +3,41 @@
     ViewData["Title"] = "Login";
 }
 
-<h1 class="display-4">Login</h1>
+<div class="d-flex align-items-center">
+    <div class="row w-100 my-5">
+        <div class="col-md-4 d-flex align-items-center justify-content-center">
+            <div class="container-fluid border border-1 rounded-4">
+                <h1 class="display-4 text-center">Login</h1>
+                <form asp-action="Login">
+                    <div class="form-group">
+                        <label asp-for="LoginId" class="control-label"></label>
+                        <input asp-for="LoginId" class="form-control"/>
+                        <span asp-validation-for="LoginId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Password" class="control-label">Password</label>
+                        <input id="Password" name="Password" type="password" class="form-control"
+                               data-val="true" data-val-required="The Password field is required."/>
+                        @Html.ValidationMessage("Password", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group text-center">
+                        <input type="submit" value="Login" class="btn btn-primary m-4 px-5"/>
+                    </div>
+                    @Html.ValidationMessage("LoginFailed", new { @class = "text-danger" })
+                </form>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="mx-5">
+                <h1 class="text-primary text-center">Most Common Bank of Australia</h1>
+                <p class="text-muted">
+                    Welcome to MCBA Internet Banking. With MCBA Online, you can quickly check your balances, review your transactions, move money between
+                    accounts, set up payments, and update your personal details all from the comfort of your home.
+                </p>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Login">
-            <div class="form-group">
-                <label asp-for="LoginId" class="control-label"></label>
-                <input asp-for="LoginId" class="form-control" />
-                <span asp-validation-for="LoginId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label for="Password" class="control-label">Password</label>
-                <input id="Password" name="Password" type="password" class="form-control"
-                    data-val="true" data-val-required="The Password field is required." />
-                @Html.ValidationMessage("Password", new { @class = "text-danger" })
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Login" class="btn btn-primary" />
-            </div>
-            @Html.ValidationMessage("LoginFailed", new { @class = "text-danger" })
-        </form>
+
+        </div>
     </div>
 </div>
 
