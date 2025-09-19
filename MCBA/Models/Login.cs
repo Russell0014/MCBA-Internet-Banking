@@ -8,6 +8,8 @@ public class Login
     [Column(TypeName = "char")]
     [StringLength(8)]
     [RegularExpression(@"^\d{8}$", ErrorMessage = "Must be exactly 8 digits.")]
+    
+    [Display(Name = "Login ID")]
     public string LoginId { get; set; }
 
     public int CustomerId { get; set; }
