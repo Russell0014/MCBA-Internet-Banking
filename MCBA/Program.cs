@@ -12,6 +12,14 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseLazyLoadingProxies();
 });
 
+// Store session into Web-Server memory.
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    // Make the session cookie essential.
+    options.Cookie.IsEssential = true;
+});
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -41,6 +49,8 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapStaticAssets();
 
