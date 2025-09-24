@@ -24,6 +24,7 @@ public class WithdrawTransaction : ITransaction
     }
 
 
+
     public bool Validate()
     {
         // amount must be positive and less than balance

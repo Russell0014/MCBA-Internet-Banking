@@ -5,6 +5,8 @@ using MCBA.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleHashing.Net;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 
 
 
@@ -19,9 +21,20 @@ namespace MCBA.Controllers
             _context = context;
         }
 
+        
         // GET: Withdraw Transaction
         public IActionResult Withdraw(int accountNumber){
-            var model = new WithdrawViewModel { AccountNumber = accountNumber }; // sets the account number to the one passed in the URL
+            int customerId = (int)HttpContext.Session.GetInt32(nameof(Customer.CustomerId))!; // gets the customer ID from the session
+            // Fetch all accounts for this customer
+            var accounts = _context.Accounts
+                .Where(a => a.CustomerId == customerId)
+                .ToList();
+            // Create the ViewModel with the SelectList
+            var model = new WithdrawViewModel
+            {
+                Accounts = new SelectList(accounts, "AccountNumber", "AccountType") 
+            };
+
             return View(model);
         }
 
@@ -40,11 +53,13 @@ namespace MCBA.Controllers
                     _context, TransactionType.Withdraw, account, model.Amount, model.Comment);  // uses the account, amount, and comment from the model
 
                 var success = transaction.Execute();
+                Console.WriteLine($"Transaction executed? {success}");
+                Console.WriteLine($"Account Balance after: {account.Balance}");
                 if (success)
                 {
                     _context.SaveChanges();
-                    TempData["Message"] = "Withdrawal successful!";
-                    return RedirectToAction("Details", "Accounts", new { accountNumber = model.AccountNumber });
+                    TempData["SuccessMessage"] = "Withdrawal successful!";
+                    return RedirectToAction("Withdraw", new { accountNumber = model.AccountNumber });
                 }
                 ModelState.AddModelError("", "Withdrawal failed.");
                 return View(model);
