@@ -20,7 +20,17 @@ public class LoginController : Controller
         _context = context;
     }
 
-    public IActionResult Login() => View();
+    public IActionResult Login()
+    {
+        // Check if the user is already logged in
+        var customerId = HttpContext.Session.GetInt32(nameof(Customer.CustomerId));
+        if (customerId.HasValue)
+        {
+            return RedirectToAction("Index", "Customer");
+        }
+        
+        return View();
+    }
 
     [HttpPost]
     public async Task<IActionResult> Login(string loginId, string password)
@@ -33,12 +43,6 @@ public class LoginController : Controller
         }
 
         var id = HttpContext.Session.GetInt32("CustomerId");
-
-        // Checks if user is already logged in
-        if (id != null)
-        {
-            return RedirectToAction("Index", "Customer");
-        }
         
         // Login customer.
         HttpContext.Session.SetInt32("CustomerId", login.CustomerId);
