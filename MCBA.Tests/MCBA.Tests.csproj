@@ -18,4 +18,8 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MCBA\MCBA.csproj" />
+  </ItemGroup>
+
 </Project>
