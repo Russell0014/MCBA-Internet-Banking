@@ -12,11 +12,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MCBA.Controllers
 {
-    public class TransactionsController : Controller
+    public class WithdrawController : Controller
     {
         private readonly DatabaseContext _context;
 
-        public TransactionsController(DatabaseContext context)
+        public WithdrawController(DatabaseContext context)
         {
             _context = context;
         }
