@@ -18,13 +18,20 @@ public class TransactionService
         if (transaction is WithdrawTransaction withdrawTransaction)
         {
             var feeApplies = TransactionRules.ShouldApplyWithdrawFee(withdrawTransaction.Account.AccountNumber, _context);
-            withdrawTransaction.SetFee(feeApplies ? TransactionRules.AtmWithdrawFee : 0m);
+            withdrawTransaction.SetFee(feeApplies ? TransactionRules.AtmWithdrawFee : 0m); // set fee
         }
 
         if (!transaction.Validate()) return false;
 
         // Deduct total from account
-        transaction.Account.Balance -= (transaction as WithdrawTransaction)?.GetTotalDeduction() ?? transaction.Amount;
+        decimal deduction = transaction.Amount;
+
+        if (transaction is WithdrawTransaction withdrawTx) // if withdrawal, include fee
+        {
+            deduction = withdrawTx.GetTotalDeduction(); // amount + fee
+        }
+
+        transaction.Account.Balance -= deduction; // deduct from account balance
 
         // persist transaction
         _context.Transactions.Add(new Transaction

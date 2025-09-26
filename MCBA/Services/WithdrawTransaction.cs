@@ -46,25 +46,5 @@ public class WithdrawTransaction : ITransaction
         return true;
     }
     public decimal GetTotalDeduction() => _totalDeduction;
-    
-
-    // public bool Execute()
-    // {
-    //     if (!Validate()) return false;
-
-    //     Amount = _totalDeduction;
-    //     // Record transaction in DB
-    //     _context.Transactions.Add(new Transaction
-    //     {
-    //         Account = Account,
-    //         Amount = Amount,
-    //         Comment = Comment,
-    //         TransactionTimeUtc = TransactionTimeUtc,
-    //         TransactionType = TransactionType
-    //     });
-
-    //     _context.SaveChanges();
-    //     return true;
-    // }
 
 }
