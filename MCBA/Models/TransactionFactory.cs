@@ -6,7 +6,7 @@ namespace MCBA.Models;
 // Factory class for creating transaction objects based on type
 public static class TransactionFactory
 {
-    public static ITransaction CreateTransaction(DatabaseContext context, TransactionType type, Account account, decimal amount, string? comment = null)
+    public static ITransaction CreateTransaction(TransactionType type, Account account, decimal amount, string? comment = null)
     {
         // // Transfer transactions require a destination account number
         // if (type == TransactionType.Transfer)
@@ -15,15 +15,15 @@ public static class TransactionFactory
         // }
         
         // Calls overloaded method with destinationAccountNumber = 0
-        return CreateTransaction(context, type, account, amount, 0, comment);
+        return CreateTransaction(type, account, amount, 0, comment);
     }
 
-    public static ITransaction CreateTransaction(DatabaseContext context, TransactionType type, Account account, decimal amount, int destinationAccountNumber, string? comment = null)
+    public static ITransaction CreateTransaction(TransactionType type, Account account, decimal amount, int destinationAccountNumber, string? comment = null)
     {
         // Uses switch expression to instantiate the correct transaction type
         return type switch
         {
-            TransactionType.Withdraw => new WithdrawTransaction(context)
+            TransactionType.Withdraw => new WithdrawTransaction
             { 
                 Account = account, 
                 Amount = amount, 

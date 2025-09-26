@@ -11,6 +11,5 @@ public interface ITransaction
     DateTime TransactionTimeUtc { get; set; }
     string? FailureReason { get; }
 
-    bool Execute();
     bool Validate();
 }
