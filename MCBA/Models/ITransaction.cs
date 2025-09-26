@@ -9,6 +9,7 @@ public interface ITransaction
     decimal Amount { get; set; }
     string? Comment { get; set; }
     DateTime TransactionTimeUtc { get; set; }
+    string? FailureReason { get; }
 
     bool Execute();
     bool Validate();

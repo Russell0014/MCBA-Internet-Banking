@@ -23,13 +23,21 @@ public class WithdrawTransaction : ITransaction
         _context = context;
     }
 
+    public string? FailureReason { get; private set; } // 
 
 
     public bool Validate()
     {
         // amount must be positive and less than balance
-        if (Amount <= 0) return false;
-        if (Account.Balance < Amount) return false;
+        if (Amount <= 0){
+            FailureReason = "Withdrawal amount must be greater than zero.";
+            return false;
+        }
+
+        if (Account.Balance < Amount){
+            FailureReason = "Insufficient funds.";
+            return false;
+        }
         return true;
     }
 
