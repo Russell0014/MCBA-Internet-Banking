@@ -1,0 +1,82 @@
+@model DepositViewModel
+
+@{
+  ViewData["Title"] = "Deposit";
+}
+
+<!DOCTYPE html>
+
+<h1 class="text-center">Deposit</h1>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-7">
+      <div class="card shadow-sm">
+        <div class="card-body p-4 p-md-5">
+          <div class="d-flex align-items-center mb-4">
+            <h1 class="h4 mb-0">Add funds</h1>
+          </div>
+
+          <form asp-controller="Deposit" asp-action="Index" method="post">
+            <!-- Account -->
+            <div class="mb-3">
+              <label asp-for="AccountNumber" class="form-label">Account</label>
+              <div class="input-group">
+                <span class="input-group-text" id="acc-addon">Acct</span>
+                <select asp-for="AccountNumber" class="form-select shadow-none" asp-items="Model.Accounts" required>
+                  <option value="" selected disabled>Select an account</option>
+                </select>
+              </div>
+              <span asp-validation-for="AccountNumber" class="text-danger"></span>
+            </div>
+
+            <!-- Amount -->
+            <div class="mb-3">
+              <label asp-for="Amount" class="form-label">Amount</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input
+                  asp-for="Amount"
+                  type="number"
+                  class="form-control shadow-none"
+                  placeholder="0.00"
+                  step="0.01"
+                  min="0.01"
+                  required
+                />
+                <span class="input-group-text">AUD</span>
+              </div>
+              <span asp-validation-for="Amount" class="text-danger"></span>
+              <div class="form-text">Use decimals for cents, e.g., 25.50.</div>
+            </div>
+
+            <!-- Comment -->
+            <div class="mb-4">
+              <label asp-for="Comment" class="form-label">Comment</label>
+              <textarea
+                asp-for="Comment"
+                class="form-control shadow-none"
+                rows="3"
+                placeholder="Optional note about this deposit"
+                maxlength="30"
+              ></textarea>
+              <span asp-validation-for="Comment" class="text-danger"></span>
+              <div class="form-text">Up to 30 characters.</div>
+            </div>
+
+            <!-- Actions -->
+            <div class="d-flex gap-2">
+              <button class="btn btn-primary" type="submit">Submit deposit</button>
+              <button class="btn btn-outline-secondary" type="reset">Clear</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+@section Scripts {
+  @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
