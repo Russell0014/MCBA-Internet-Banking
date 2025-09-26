@@ -6,7 +6,7 @@ using MCBA.Models;
 public static class TransactionRules
 {
     private const int MaxFreeTransfers = 2;
-    private const decimal AtmWithdrawFee = 0.01m;
+    public const decimal AtmWithdrawFee = 0.01m;
 
     // Determines if the ATM withdrawal fee should be applied based on the number of prior withdrawals/transfers
 

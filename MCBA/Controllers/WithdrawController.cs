@@ -46,12 +46,13 @@ public class WithdrawController : Controller
             }
 
             var transaction = TransactionFactory.CreateTransaction( // creates a withdraw transaction using the factory
-                _context, TransactionType.Withdraw, account, model.Amount, model.Comment);  // uses the account, amount, and comment from the model
+                TransactionType.Withdraw, account, model.Amount, model.Comment);  // uses the account, amount, and comment from the model
 
-            var success = transaction.Execute();
+            var transactionService = new TransactionService(_context);
+            var success = transactionService.Execute(transaction);
+
             if (success)
             {
-                _context.SaveChanges();
                 TempData["SuccessMessage"] = "Withdrawal successful!";
                 return RedirectToAction("Withdraw", new { accountNumber = model.AccountNumber });
             } else {
