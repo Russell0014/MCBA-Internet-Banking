@@ -15,6 +15,8 @@ public class WithdrawTransaction : ITransaction
     public decimal Amount { get; set; }
     public string? Comment { get; set; }
     public DateTime TransactionTimeUtc { get; set; } = DateTime.UtcNow;
+    private decimal _totalDeduction;
+    
 
     private readonly DatabaseContext _context;
 
@@ -28,13 +30,22 @@ public class WithdrawTransaction : ITransaction
 
     public bool Validate()
     {
+        
+
+        var minBalance = TransactionRules.GetMinBalance(Account); // get min balance based on account type
+
+        // Apply ATM fee if customer exceeded free withdrawal limit
+        var fee = TransactionRules.GetAtmWithdrawFee(Account.AccountNumber, _context); // get the fee
+
+        _totalDeduction = Amount + fee;
+        
         // amount must be positive and less than balance
         if (Amount <= 0){
             FailureReason = "Withdrawal amount must be greater than zero.";
             return false;
         }
 
-        if (Account.Balance < Amount){
+        if (Account.Balance - _totalDeduction < minBalance){
             FailureReason = "Insufficient funds.";
             return false;
         }
@@ -45,16 +56,7 @@ public class WithdrawTransaction : ITransaction
     {
         if (!Validate()) return false;
 
-        // Apply ATM fee if necessary ]\
-        var feeApplies = false;
-        if (feeApplies)
-        {
-            Account.Balance -= AtmWithdrawFee;
-        }
-
-        // Withdraw the amount
-        Account.Balance -= Amount;
-
+        Amount = _totalDeduction;
         // Record transaction in DB
         _context.Transactions.Add(new Transaction
         {
@@ -68,4 +70,5 @@ public class WithdrawTransaction : ITransaction
         _context.SaveChanges();
         return true;
     }
+
 }
