@@ -3,22 +3,35 @@
     ViewData["Title"] = "Accounts";
 }
 
-<div>
-    <h1 class="display-4 text-center">Welcome, @Model.Name</h1>
-    
-    <h3>Your Accounts</h3>
-    <table class="table">
-        <tr>
-            <th>@Html.DisplayNameFor(x => x.Accounts[0].AccountNumber)</th>
-            <th>@Html.DisplayNameFor(x => x.Accounts[0].AccountType)</th>
-            <th>@Html.DisplayNameFor(x => x.Accounts[0].Balance)</th>
-        </tr>
-        @foreach(var account in Model.Accounts) {
-            <tr>
-                <td>@Html.DisplayFor(x => account.AccountNumber)</td>
-                <td>@Html.DisplayFor(x => account.AccountType)</td>
-                <td>@Html.DisplayFor(x => account.Balance)</td>
-            </tr>
-        }
-    </table>
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4">Welcome, @Model.Name</h1>
+        <p class="text-muted">Your accounts overview</p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                    <thead class="table-light">
+                    <tr>
+                        <th>@Html.DisplayNameFor(x => x.Accounts[0].AccountNumber)</th>
+                        <th>@Html.DisplayNameFor(x => x.Accounts[0].AccountType)</th>
+                        <th class="text-end">@Html.DisplayNameFor(x => x.Accounts[0].Balance)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var account in Model.Accounts)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(x => account.AccountNumber)</td>
+                            <td>@Html.DisplayFor(x => account.AccountType)</td>
+                            <td class="text-end fw-semibold">@Html.DisplayFor(x => account.Balance)</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
