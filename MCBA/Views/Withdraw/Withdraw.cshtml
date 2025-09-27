@@ -1,47 +1,131 @@
 @model MCBA.Models.WithdrawViewModel
-@using Microsoft.AspNetCore.Mvc
-@using Microsoft.AspNetCore.Mvc.Rendering
-@using Microsoft.AspNetCore.Mvc.ViewFeatures
-@using Microsoft.AspNetCore.Mvc.Rendering
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
 
 @{
-    ViewData["Title"] = "Withdraw";
+  ViewData["Title"] = "Withdraw";
 }
 
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+<h1 class="text-center">Withdraw</h1>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-7">
+      <div class="card shadow-sm">
+        <div class="card-body p-4 p-md-5">
+          <div class="d-flex align-items-center mb-4">
+            <h1 class="h4 mb-0">Withdraw funds</h1>
+          </div>
+
+          <form asp-controller="Withdraw" asp-action="Withdraw" method="post">
+            <!-- Account -->
+            <div class="mb-3">
+              <label asp-for="AccountNumber" class="form-label">Account</label>
+              <div class="input-group">
+                <span class="input-group-text" id="acc-addon">Acct</span>
+                <select asp-for="AccountNumber" class="form-select shadow-none" asp-items="Model.Accounts" required>
+                  <option value="" selected disabled>Select an account</option>
+                </select>
+              </div>
+              <span asp-validation-for="AccountNumber" class="text-danger"></span>
+            </div>
+
+            <!-- Amount -->
+            <div class="mb-3">
+              <label asp-for="Amount" class="form-label">Amount</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input
+                  asp-for="Amount"
+                  type="number"
+                  class="form-control shadow-none"
+                  placeholder="0.00"
+                  step="0.01"
+                  min="0.01"
+                  required
+                />
+                <span class="input-group-text">AUD</span>
+              </div>
+              <span asp-validation-for="Amount" class="text-danger"></span>
+              <div class="form-text">Use decimals for cents, e.g. 25.50.</div>
+            </div>
+
+            <!-- Comment -->
+            <div class="mb-4">
+              <label asp-for="Comment" class="form-label">Comment</label>
+              <textarea
+                asp-for="Comment"
+                class="form-control shadow-none"
+                rows="3"
+                placeholder="Optional note about this withdrawal"
+                maxlength="30"
+              ></textarea>
+              <span asp-validation-for="Comment" class="text-danger"></span>
+              <div class="form-text">Up to 30 characters.</div>
+            </div>
+
+            <!-- Actions -->
+            <div class="d-flex gap-2">
+              <button type="button" id="withdrawBtn" class="btn btn-primary">
+                Withdraw
+              </button>
+              <button class="btn btn-outline-secondary" type="reset">Clear</button>
+            </div>
+
+            <div class="modal fade" id="WithdrawModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ModalLabel">Confirm Withdrawal</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p><strong>Account:</strong> <span id="confirmAccount"></span></p>
+                    <p><strong>Amount:</strong> $<span id="confirmAmount"></span></p>
+                    <p><strong>Comment:</strong> <span id="confirmComment"></span></p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Withdraw</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <div class="mt-4">
+            @if (TempData["ErrorMessage"] != null)
+            {
+              <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+            }
+            @if (TempData["SuccessMessage"] != null)
+            {
+              <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+            }
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+  @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+  @{ await Html.RenderPartialAsync("_ConfirmModalScript", new MCBA.ViewModel.ModalScriptViewModel { ModalId = "WithdrawModal", ButtonId = "withdrawBtn" }); }
+  <script>
+    document.getElementById('WithdrawModal').addEventListener('show.bs.modal', function () {
+      document.getElementById('confirmAccount').textContent = document.getElementById('AccountNumber').value;
+      document.getElementById('confirmAmount').textContent = document.getElementById('Amount').value;
+      document.getElementById('confirmComment').textContent = document.getElementById('Comment').value || 'None';
+    });
+
+    // Auto-clear alerts after 2 seconds, Move to Confirm Page later
+    setTimeout(() => {
+      document.querySelectorAll('.alert').forEach(alert => {
+        alert.style.transition = 'opacity 1s';
+        alert.style.opacity = '0';
+        setTimeout(() => alert.remove(), 1000);
+      });
+    }, 2000);
+  </script>
+
 }
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-}
-
-
-
-<h2>Withdraw</h2>
-
-<form asp-controller="Withdraw" asp-action="Withdraw" method="post">
-    <div class="form-group">
-        <label asp-for="AccountNumber" class="control-label"></label>
-        <select asp-for="AccountNumber" class="form-control" asp-items="Model.Accounts">
-            <option value="">-- Select Account --</option>
-        </select>
-        <span asp-validation-for="AccountNumber" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Amount" class="control-label"></label>
-        <input asp-for="Amount" class="form-control" type="number" step="0.01" min="0" required />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Comment" class="control-label"></label>
-        <input asp-for="Comment" class="form-control" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Withdraw</button>
-</form>
-
