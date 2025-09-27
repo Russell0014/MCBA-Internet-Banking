@@ -1,4 +1,4 @@
-@model DepositViewModel
+@model MCBA.ViewModel.DepositViewModel
 
 @{
   ViewData["Title"] = "Deposit";
@@ -47,7 +47,7 @@
                 <span class="input-group-text">AUD</span>
               </div>
               <span asp-validation-for="Amount" class="text-danger"></span>
-              <div class="form-text">Use decimals for cents, e.g., 25.50.</div>
+              <div class="form-text">Use decimals for cents, e.g. 25.50.</div>
             </div>
 
             <!-- Comment -->
@@ -66,10 +66,44 @@
 
             <!-- Actions -->
             <div class="d-flex gap-2">
-              <button class="btn btn-primary" type="submit">Submit deposit</button>
+              <button type="button" id="depositBtn" class="btn btn-primary">
+                Deposit
+              </button>
               <button class="btn btn-outline-secondary" type="reset">Clear</button>
             </div>
+
+            <div class="modal fade" id="DepositModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ModalLabel">Confirm Deposit</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p><strong>Account:</strong> <span id="confirmAccount"></span></p>
+                    <p><strong>Amount:</strong> $<span id="confirmAmount"></span></p>
+                    <p><strong>Comment:</strong> <span id="confirmComment"></span></p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Deposit</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </form>
+
+          <div class="mt-4">
+          @if (TempData["ErrorMessage"] != null)
+          {
+            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+          }
+          @if (TempData["SuccessMessage"] != null)
+          {
+            <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+          }
+          </div>
+          
         </div>
       </div>
     </div>
@@ -77,6 +111,26 @@
 </div>
 
 
+
+
 @section Scripts {
   @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+  @{ await Html.RenderPartialAsync("_ConfirmModalScript", new MCBA.ViewModel.ModalScriptViewModel { ModalId = "DepositModal", ButtonId = "depositBtn" }); }
+  <script>
+    document.getElementById('DepositModal').addEventListener('show.bs.modal', function () {
+      document.getElementById('confirmAccount').textContent = document.getElementById('AccountNumber').value;
+      document.getElementById('confirmAmount').textContent = document.getElementById('Amount').value;
+      document.getElementById('confirmComment').textContent = document.getElementById('Comment').value || 'None';
+    });
+
+    // Auto-clear alerts after 2 seconds, Move to Confirm Page later
+    setTimeout(() => {
+      document.querySelectorAll('.alert').forEach(alert => {
+        alert.style.transition = 'opacity 1s';
+        alert.style.opacity = '0';
+        setTimeout(() => alert.remove(), 1000);
+      });
+    }, 2000);
+  </script>
+
 }

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace MCBA.Models;
+namespace MCBA.ViewModel;
 
 public class DepositViewModel
 {
