@@ -1,0 +1,140 @@
+
+@model MCBA.ViewModel.TransferViewModel
+
+@{
+  ViewData["Title"] = "Transfer";
+}
+
+<h1 class="text-center">Transfer</h1>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-7">
+      <div class="card shadow-sm">
+        <div class="card-body p-4 p-md-5">
+          <div class="d-flex align-items-center mb-4">
+            <h1 class="h4 mb-0">Transfer funds</h1>
+          </div>
+
+          <form asp-controller="Transfer" asp-action="Index" method="post">
+            <!-- Account -->
+            <div class="mb-3">
+              <label asp-for="AccountNumber" class="form-label">Account</label>
+              <div class="input-group">
+                <span class="input-group-text" id="acc-addon">Acct</span>
+                <select asp-for="AccountNumber" class="form-select shadow-none" asp-items="Model.Accounts" required>
+                  <option value="" selected disabled>Select an account</option>
+                </select>
+              </div>
+              <span asp-validation-for="AccountNumber" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+              <label asp-for="DestAccountNumber" class="form-label">Destination Account</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="destacc-addon">Dest</span>
+                    <input asp-for="DestAccountNumber" type="text" class="form-control shadow-none" placeholder="Enter destination account number" maxlength="10" required />
+
+                    </select>
+            </div>
+
+            <!-- Amount -->
+            <div class="mb-3">
+              <label asp-for="Amount" class="form-label">Amount</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input
+                  asp-for="Amount"
+                  type="number"
+                  class="form-control shadow-none"
+                  step="0.01"
+                  min="0.01"
+                  required
+                />
+                <span class="input-group-text">AUD</span>
+              </div>
+              <span asp-validation-for="Amount" class="text-danger"></span>
+              <div class="form-text">Use decimals for cents, e.g. 25.50.</div>
+            </div>
+
+            <!-- Comment -->
+            <div class="mb-4">
+              <label asp-for="Comment" class="form-label">Comment</label>
+              <textarea
+                asp-for="Comment"
+                class="form-control shadow-none"
+                rows="3"
+                placeholder="Optional note about this transfer"
+                maxlength="30"
+              ></textarea>
+              <span asp-validation-for="Comment" class="text-danger"></span>
+              <div class="form-text">Up to 30 characters.</div>
+            </div>
+
+            <!-- Actions -->
+            <div class="d-flex gap-2">
+              <button type="button" id="transferBtn" class="btn btn-primary">
+                Transfer
+              </button>
+              <button class="btn btn-outline-secondary" type="reset">Clear</button>
+            </div>
+
+            <div class="modal fade" id="TransferModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ModalLabel">Confirm Transfer</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p><strong>Account:</strong> <span id="confirmAccount"></span></p>
+                    <p><strong>Amount:</strong> $<span id="confirmAmount"></span></p>
+                    <p><strong>Comment:</strong> <span id="confirmComment"></span></p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Transfer</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <div class="mt-4">
+            @if (TempData["ErrorMessage"] != null)
+            {
+              <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+            }
+            @if (TempData["SuccessMessage"] != null)
+            {
+              <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+            }
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+  @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+  @{ await Html.RenderPartialAsync("_ConfirmModalScript", new MCBA.ViewModel.ModalScriptViewModel { ModalId = "TransferModal", ButtonId = "transferBtn" }); }
+  <script>
+    document.getElementById('TransferModal').addEventListener('show.bs.modal', function () {
+      document.getElementById('confirmAccount').textContent = document.getElementById('AccountNumber').value;
+      document.getElementById('confirmAmount').textContent = document.getElementById('Amount').value;
+      document.getElementById('confirmComment').textContent = document.getElementById('Comment').value || 'None';
+    });
+
+    // Auto-clear alerts after 2 seconds, Move to Confirm Page later
+    setTimeout(() => {
+      document.querySelectorAll('.alert').forEach(alert => {
+        alert.style.transition = 'opacity 1s';
+        alert.style.opacity = '0';
+        setTimeout(() => alert.remove(), 1000);
+      });
+    }, 2000);
+  </script>
+
+}

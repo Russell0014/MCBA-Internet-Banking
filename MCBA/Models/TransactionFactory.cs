@@ -9,10 +9,10 @@ public static class TransactionFactory
     public static ITransaction CreateTransaction(TransactionType type, Account account, decimal amount, string? comment = null)
     {
         // // Transfer transactions require a destination account number
-        // if (type == TransactionType.Transfer)
-        // {
-        //     throw new ArgumentException("Transfer transactions require a destination account.");
-        // }
+        if (type == TransactionType.Transfer)
+        {
+            throw new ArgumentException("Transfer transactions require a destination account.");
+        }
         
         // Calls overloaded method with destinationAccountNumber = 0
         return CreateTransaction(type, account, amount, 0, comment);
@@ -35,14 +35,14 @@ public static class TransactionFactory
                 Amount = amount, 
                 Comment = comment 
             },
-            // TransactionType.Transfer => new TransferTransaction 
-            // { 
-            //     Account = account, 
-            //     Amount = amount, 
-            //     Comment = comment,
-            //     // For transfer, set the destination account
-            //     DestinationAccount = new Account { AccountNumber = destinationAccountNumber }
-            // },
+            TransactionType.Transfer => new TransferTransaction 
+            { 
+                Account = account, 
+                Amount = amount, 
+                Comment = comment,
+                // For transfer, set the destination account
+                DestinationAccount = new Account { AccountNumber = destinationAccountNumber }
+            },
             _ => throw new ArgumentException($"Invalid transaction type: {type}")
         };
     }
