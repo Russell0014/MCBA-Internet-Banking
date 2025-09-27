@@ -19,7 +19,7 @@ public class WithdrawController : Controller
     } 
     
     // GET: Withdraw Transaction
-    public IActionResult Withdraw(int accountNumber){
+    public IActionResult Index(int accountNumber){
         int customerId = (int)HttpContext.Session.GetInt32(nameof(Customer.CustomerId))!; // gets the customer ID from the session
         // Fetch all accounts for this customer
         var accounts = _context.Accounts
@@ -39,9 +39,9 @@ public class WithdrawController : Controller
         return View(model);
     }
 
-    [HttpPost, ActionName("withdraw")]
+    [HttpPost, ActionName("Index")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Withdraw(WithdrawViewModel model){
+    public async Task<IActionResult> Index(WithdrawViewModel model){
         if (ModelState.IsValid)
         {
             var account = await _context.Accounts.FindAsync(model.AccountNumber); // finds the account based on the account number in the model
@@ -59,15 +59,14 @@ public class WithdrawController : Controller
             if (success)
             {
                 TempData["SuccessMessage"] = "Withdrawal successful!";
-                return RedirectToAction("Withdraw", new { accountNumber = model.AccountNumber });
             } else {
                 TempData["ErrorMessage"] = transaction.FailureReason ?? "An error occurred.";
-                return RedirectToAction("Withdraw", new { accountNumber = model.AccountNumber });
-
             }
+
+            return RedirectToAction("Index", new { accountNumber = model.AccountNumber });
         }
         ModelState.AddModelError("", "An Error occurred. Please try again.");
-        return RedirectToAction("Withdraw", new { accountNumber = model.AccountNumber });
+        return RedirectToAction("Index", new { accountNumber = model.AccountNumber });
     }
 
 }
