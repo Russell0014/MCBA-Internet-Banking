@@ -6,7 +6,7 @@ namespace MCBA.Models;
 public enum AccountType
 {
     Checking = 1,
-    Saving = 2
+    Savings = 2
 }
 
 public class Account

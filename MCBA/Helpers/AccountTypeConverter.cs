@@ -11,7 +11,7 @@ public class AccountTypeConverter : JsonConverter<AccountType>
         var value = reader.Value?.ToString();
         return value switch
         {
-            "S" => AccountType.Saving,
+            "S" => AccountType.Savings,
             "C" => AccountType.Checking,
             _ => throw new JsonSerializationException($"Unknown AccountType value: {value}")
         };
