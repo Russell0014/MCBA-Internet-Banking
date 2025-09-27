@@ -9,7 +9,9 @@ public interface ITransaction
     decimal Amount { get; set; }
     string? Comment { get; set; }
     DateTime TransactionTimeUtc { get; set; }
+    decimal Fee { get; } 
     string? FailureReason { get; }
 
     bool Validate();
+    void ExecuteTransaction();
 }

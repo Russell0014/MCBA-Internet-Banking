@@ -28,23 +28,36 @@ public class WithdrawTransaction : ITransaction
 
     public bool Validate()
     {
-    
+
         var minBalance = TransactionRules.GetMinBalance(Account); // get min balance based on account type
 
         _totalDeduction = Amount + Fee;
-        
+
         // amount must be positive and less than balance
-        if (Amount <= 0){
+        if (Amount <= 0)
+        {
             FailureReason = "Withdrawal amount must be greater than zero.";
             return false;
         }
 
-        if (Account.Balance - _totalDeduction < minBalance){
+        if (Account.Balance - _totalDeduction < minBalance)
+        {
             FailureReason = "Insufficient funds.";
             return false;
         }
         return true;
     }
     public decimal GetTotalDeduction() => _totalDeduction;
+    
+    public void CalculateFee(DatabaseContext context)
+    {
+        var feeApplies = TransactionRules.ShouldApplyWithdrawFee(Account.AccountNumber, context);
+        SetFee(feeApplies ? TransactionRules.AtmWithdrawFee : 0m);
+    }
+    public void ExecuteTransaction()
+    {
+        decimal deduction = GetTotalDeduction(); // amount + fee
+        Account.Balance -= deduction;
+    }
 
 }

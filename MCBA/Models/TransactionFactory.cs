@@ -29,12 +29,12 @@ public static class TransactionFactory
                 Amount = amount, 
                 Comment = comment 
             },
-            // TransactionType.Deposit => new DepositTransaction 
-            // { 
-            //     Account = account, 
-            //     Amount = amount, 
-            //     Comment = comment 
-            // },
+            TransactionType.Deposit => new DepositTransaction 
+            { 
+                Account = account, 
+                Amount = amount, 
+                Comment = comment 
+            },
             // TransactionType.Transfer => new TransferTransaction 
             // { 
             //     Account = account, 
