@@ -18,7 +18,7 @@ public class DepositController : Controller
     }
 
     // GET
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int accountNumber)
     {
         var customerId = (int)HttpContext.Session.GetInt32(nameof(Customer.CustomerId))!; // gets the customer ID from the session
         // Fetch all accounts for this customer
