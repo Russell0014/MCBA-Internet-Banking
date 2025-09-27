@@ -1,0 +1,16 @@
+@model MCBA.ViewModel.ModalScriptViewModel
+
+<script>
+    $(document).ready(function() {
+        $('#@Model.ButtonId').on('click', function() {
+            if ($('form').valid()) {
+                $('#@Model.ModalId').modal('show'); // Open modal only if valid
+            } else {
+                $('form').validate().form(); // Trigger and display validation errors
+            }
+        });
+        $('form').on('submit', function() {
+            $('#@Model.ModalId').modal('hide'); // Always close modal on submit
+        });
+    });
+</script>

@@ -19,11 +19,25 @@
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                <ul class="navbar-nav">
-                    @{
-                        var isLoggedIn = Context.Session.GetInt32(nameof(Customer.CustomerId)).HasValue;
+            <div class="navbar-collapse collapse d-sm-inline-flex">
+                @{
+                    var isLoggedIn = Context.Session.GetInt32(nameof(Customer.CustomerId)).HasValue;
+                }
+                <ul class="navbar-nav mx-auto">
+                    @if (isLoggedIn)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Customer" asp-action="Index">My Accounts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Deposit" asp-action="Index">Deposit</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Withdraw" asp-action="Withdraw">Withdraw</a>
+                        </li>
                     }
+                </ul>
+                <ul class="navbar-nav ml-auto">
                     @if (isLoggedIn)
                     {
                         <li class="nav-item">
@@ -34,17 +48,6 @@
                     {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Login" asp-action="Login">Login</a>
-                        </li>
-                    }
-                </ul>
-                <ul class="navbar-nav flex-grow-1">
-                    @if (isLoggedIn)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Customer" asp-action="Index">My Accounts</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Withdraw" asp-action="Withdraw">Withdraw</a>
                         </li>
                     }
                 </ul>

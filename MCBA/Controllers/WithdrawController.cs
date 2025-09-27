@@ -24,11 +24,16 @@ public class WithdrawController : Controller
         // Fetch all accounts for this customer
         var accounts = _context.Accounts
             .Where(a => a.CustomerId == customerId)
+            .Select(a => new
+            {
+                Value = a.AccountNumber,
+                Text = $"{a.AccountNumber} {a.AccountType} ({a.Balance:C})"
+            })
             .ToList();
         // Create the ViewModel with the SelectList
         var model = new WithdrawViewModel
         {
-            Accounts = new SelectList(accounts, "AccountNumber", "AccountType") 
+            Accounts = new SelectList(accounts, "Value", "Text")
         };
 
         return View(model);
