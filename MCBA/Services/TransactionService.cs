@@ -19,6 +19,10 @@ public class TransactionService
         {
             withdrawTransaction.CalculateFee(_context);
         }
+        else if (transaction is TransferTransaction transferTransaction)
+        {
+            transferTransaction.CalculateFee(_context);
+        }
 
         if (!transaction.Validate()) return false;
 
