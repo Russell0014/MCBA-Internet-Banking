@@ -7,7 +7,7 @@ public static class TransactionRules
 {
     private const int MaxFreeTransfers = 2;
     public const decimal AtmWithdrawFee = 0.01m;
-    private const decimal TransferFee = 0.05m;
+    public const decimal AtmTransferFee = 0.05m;
 
     // Determines if the ATM withdrawal fee should be applied based on the number of prior withdrawals/transfers
 

@@ -50,8 +50,8 @@ public class TransferTransaction : ITransaction
     
     public void CalculateFee(DatabaseContext context)
     {
-        var feeApplies = TransactionRules.ShouldApplyWithdrawFee(Account.AccountNumber, context);
-        SetFee(feeApplies ? TransactionRules.AtmWithdrawFee : 0m);
+        var feeApplies = TransactionRules.ShouldApplyTransferFee(Account.AccountNumber, context);
+        SetFee(feeApplies ? TransactionRules.AtmTransferFee : 0m);
     }
     public void ExecuteTransaction()
     {
