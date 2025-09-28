@@ -29,13 +29,17 @@
               <span asp-validation-for="AccountNumber" class="text-danger"></span>
             </div>
 
+            
+            <!-- Destination Account -->
             <div class="mb-3">
-              <label asp-for="DestAccountNumber" type="number" class="form-label">Destination Account</label>
-                <div class="input-group">
-                    <span class="input-group-text" id="destacc-addon">Dest</span>
-                    <input asp-for="DestAccountNumber" type="number" class="form-control shadow-none" placeholder="Enter destination account number" maxlength="10" required />
-
-                    </select>
+              <label asp-for="DestAccountNumber" type="text" class="form-label">Destination Account</label>
+              <div class="input-group">
+                <span class="input-group-text" id="destacc-addon">Dest</span>
+                <input asp-for="DestAccountNumber" type="text" class="form-control shadow-none"
+                       placeholder="Enter destination account number" pattern="[0-9]{4}" maxlength="4" minlength="4"
+                       required/>
+              </div>
+              <span asp-validation-for="DestAccountNumber" class="text-danger"></span>
             </div>
 
             <!-- Amount -->
@@ -88,6 +92,7 @@
                   </div>
                   <div class="modal-body">
                     <p><strong>Account:</strong> <span id="confirmAccount"></span></p>
+                    <p><strong>Destination Account:</strong> <span id="confirmDestinationAccount"></span></p>
                     <p><strong>Amount:</strong> $<span id="confirmAmount"></span></p>
                     <p><strong>Comment:</strong> <span id="confirmComment"></span></p>
                   </div>
@@ -121,8 +126,12 @@
   @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
   @{ await Html.RenderPartialAsync("_ConfirmModalScript", new MCBA.ViewModel.ModalScriptViewModel { ModalId = "TransferModal", ButtonId = "transferBtn" }); }
   <script>
+    // Clear the destination account field on load to override model default
+    document.getElementById('DestAccountNumber').value = '';
+    
     document.getElementById('TransferModal').addEventListener('show.bs.modal', function () {
       document.getElementById('confirmAccount').textContent = document.getElementById('AccountNumber').value;
+      document.getElementById('confirmDestinationAccount').textContent = document.getElementById('DestAccountNumber').value;
       document.getElementById('confirmAmount').textContent = document.getElementById('Amount').value;
       document.getElementById('confirmComment').textContent = document.getElementById('Comment').value || 'None';
     });
