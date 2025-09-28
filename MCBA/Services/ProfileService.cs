@@ -21,7 +21,7 @@ public class ProfileService
     // Update general customer info
     public bool UpdateCustomerInfo(Customer updatedCustomer)
     {
-        var customer = _context.Customers.Find(updatedCustomer.CustomerID);
+        var customer = _context.Customers.Find(updatedCustomer.CustomerId);
         if (customer == null) return false;
 
         customer.Name = updatedCustomer.Name;
@@ -29,21 +29,11 @@ public class ProfileService
         customer.Address = updatedCustomer.Address;
         customer.City = updatedCustomer.City;
         customer.State = updatedCustomer.State;
-        customer.Postcode = updatedCustomer.Postcode;
+        customer.PostCode = updatedCustomer.PostCode;
         customer.Mobile = updatedCustomer.Mobile;
 
         _context.SaveChanges();
         return true;
     }
 
-    // Update password only
-    public bool ChangePassword(int customerId, string newPasswordHash)
-    {
-        var customer = _context.Customers.Find(customerId);
-        if (customer == null) return false;
-
-        customer.PasswordHash = newPasswordHash; 
-        _context.SaveChanges();
-        return true;
-    }
 }
