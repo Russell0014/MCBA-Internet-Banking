@@ -25,6 +25,9 @@ public class Transaction
 
     [ForeignKey(nameof(DestinationAccount))]
     public int? DestinationAccountNumber { get; set; }
+    
+    
+    
 
     public virtual Account DestinationAccount { get; set; }
 

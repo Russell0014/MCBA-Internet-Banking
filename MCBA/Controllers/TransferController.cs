@@ -47,10 +47,7 @@ public class TransferController : Controller
         {
             var account = await _context.Accounts.FindAsync(model.AccountNumber); // finds the account based on the account number in the model
             var destAccount = await _context.Accounts.FindAsync(model.DestAccountNumber); // finds the destination account based on the dest account number in the model
-            if (account == null)
-            {
-                return NotFound();
-            }
+
 
             var transaction = TransactionFactory.CreateTransaction( // creates a withdraw transaction using the factory
                 TransactionType.Transfer, account, model.Amount, model.DestAccountNumber, model.Comment);  // uses the account, amount, dest account, and comment from the model
