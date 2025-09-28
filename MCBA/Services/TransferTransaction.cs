@@ -44,6 +44,16 @@ public class TransferTransaction : ITransaction
             FailureReason = "Insufficient funds.";
             return false;
         }
+        if (DestinationAccount == null)
+        {
+            FailureReason = "Invalid Destination Account.";
+            return false;
+        }
+        if (Account.AccountNumber == DestinationAccount.AccountNumber)
+        {
+            FailureReason = "Cannot transfer to the same account.";
+            return false;
+        }
         return true;
     }
     public decimal GetTotalDeduction() => _totalDeduction;
