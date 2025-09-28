@@ -25,6 +25,10 @@ public class Transaction
 
     [ForeignKey(nameof(DestinationAccount))]
     public int? DestinationAccountNumber { get; set; }
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
     public virtual Account DestinationAccount { get; set; }
 
