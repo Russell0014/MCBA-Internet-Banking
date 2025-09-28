@@ -19,6 +19,10 @@ public class TransactionService
         {
             withdrawTransaction.CalculateFee(_context);
         }
+        else if (transaction is TransferTransaction transferTransaction)
+        {
+            transferTransaction.CalculateFee(_context);
+        }
 
         if (!transaction.Validate()) return false;
 
@@ -29,11 +33,25 @@ public class TransactionService
         _context.Transactions.Add(new Transaction
         {
             Account = transaction.Account,
+            DestinationAccountNumber = transaction.DestinationAccount?.AccountNumber,
             Amount = transaction.Amount,
             Comment = transaction.Comment,
             TransactionType = transaction.TransactionType,
             TransactionTimeUtc = DateTime.UtcNow
         });
+
+        if (transaction is TransferTransaction transfer)
+        {
+            // persist destination transaction
+            _context.Transactions.Add(new Transaction
+            {
+                Account = transfer.DestinationAccount,
+                Amount = transfer.Amount,
+                Comment = transfer.Comment,
+                TransactionType = transaction.TransactionType,
+                TransactionTimeUtc = DateTime.UtcNow
+            });
+        }
 
         // If there's a fee, add a separate ServiceCharge transaction
         if (transaction.Fee > 0)

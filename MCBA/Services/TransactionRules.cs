@@ -7,6 +7,7 @@ public static class TransactionRules
 {
     private const int MaxFreeTransfers = 2;
     public const decimal AtmWithdrawFee = 0.01m;
+    public const decimal AtmTransferFee = 0.05m;
 
     // Determines if the ATM withdrawal fee should be applied based on the number of prior withdrawals/transfers
 
@@ -21,9 +22,22 @@ public static class TransactionRules
         return count >= MaxFreeTransfers;
     }
 
+    public static bool ShouldApplyTransferFee(int accountNumber, DatabaseContext context)
+    {
+        var count = context.Transactions
+            .Count(t => t.Account.AccountNumber == accountNumber &&
+                        t.TransactionType == TransactionType.Transfer);
+        return count >= MaxFreeTransfers;
+    }
+
     public static decimal GetAtmWithdrawFee(int accountNumber, DatabaseContext context)
     {
         return ShouldApplyWithdrawFee(accountNumber, context) ? AtmWithdrawFee : 0;
+    }
+
+    public static decimal GetAtmTransferFee(int accountNumber, DatabaseContext context)
+    {
+        return ShouldApplyTransferFee(accountNumber, context) ? AtmWithdrawFee : 0;
     }
 
 

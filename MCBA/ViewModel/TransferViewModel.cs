@@ -1,6 +1,8 @@
 <<<<<<< Updated upstream
 // using Microsoft.AspNetCore.Mvc.Rendering;
 // namespace MCBA.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+namespace MCBA.ViewModel;
 
 // // ViewModel for Transfer
 // public class TransferViewModel {
@@ -31,9 +33,9 @@ public class TransferViewModel {
 >>>>>>> Stashed changes
     
 
-//     // in the viewmodel we have account number, a list of accounts, dest account, amount, and comment. These are what is seen on the website and captures from the user.
+    // in the viewmodel we have account number, a list of accounts, dest account, amount, and comment. These are what is seen on the website and captures from the user.
 
     
-// }
+}
 
 
