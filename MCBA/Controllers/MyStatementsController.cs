@@ -3,6 +3,8 @@ using MCBA.Data;
 using MCBA.Models;
 using MCBA.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using X.PagedList.Extensions;
 
 namespace MCBA.Controllers;
 
@@ -14,34 +16,39 @@ public class MyStatementsController : Controller
     {
         _context = context;
     }
+    
+    private int CustomerId => HttpContext.Session.GetInt32(nameof(Customer.CustomerId))!.Value; // gets the customer ID from the session
 
     // GET
-    public async Task<IActionResult> Index(int accountNumber)
+    public async Task<IActionResult> Index()
     {
-        int customerId = (int)HttpContext.Session.GetInt32(nameof(Customer.CustomerId))!; // gets the customer ID from the session
-        // Fetch all accounts for this customer
-        var accounts = _context.Accounts
-            .Where(a => a.CustomerId == customerId).ToList();
-
-        // Create and populate the ViewModel
-        var viewModel = new MyStatementsViewModel
-        {
-            Accounts = accounts
-        };
-
-        return View(viewModel);
+        // Create and populate the view
+        var customer = await _context.Customers.FindAsync(CustomerId);
+        return View(customer);
     }
 
-    // POST 
-    [HttpPost, ActionName("Index")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Index(MyStatementsViewModel model)
+    public async Task<IActionResult> Details(int accountNumber, int page = 1)
     {
-        if (ModelState.IsValid)
+        var account = await _context.Accounts
+            .FirstOrDefaultAsync(a => a.AccountNumber == accountNumber && 
+                                      a.CustomerId == CustomerId);
+    
+        if (account == null)
         {
-            return RedirectToAction("Index");
+            return NotFound("Account not found or you don't have access to it.");
         }
+        
+        const int pageSize = 4;
+        var pagedTransactions = _context.Transactions
+            .Where(t => t.AccountNumber == accountNumber)
+            .OrderByDescending(t => t.TransactionTimeUtc).ToPagedList(page, pageSize);
 
-        return View(model);
+        var viewModel = new MyStatementsViewModel
+        {
+            Account = account,
+            Transactions = pagedTransactions
+        };
+        
+        return View(viewModel);
     }
 }

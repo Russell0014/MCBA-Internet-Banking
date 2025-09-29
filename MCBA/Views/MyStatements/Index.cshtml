@@ -1,4 +1,4 @@
-@model MCBA.ViewModel.MyStatementsViewModel
+@model Customer
 @{
     ViewData["Title"] = "My Statements";
 }
@@ -15,18 +15,21 @@
                     <div class="card @(index == 1 ? "" : "ms-auto")" style="width: 18rem;">
                         @if (account.AccountType == AccountType.Savings)
                         {
-                            <img class="card-img" src="@Url.Content("~/images/wallet.svg")" alt="savings"  style="height: 250px; width: auto;"  draggable="false"/>
+                            <img class="card-img" src="@Url.Content("~/images/wallet.svg")" alt="savings"
+                                 style="height: 250px; width: auto;" draggable="false"/>
                         }
                         else
                         {
-                            <img src="@Url.Content("~/images/card.svg")" alt="checking"  style="height: 250px; width: auto;" draggable="false"/>
+                            <img src="@Url.Content("~/images/card.svg")" alt="checking"
+                                 style="height: 250px; width: auto;" draggable="false"/>
                         }
 
                         <div class="card-body">
                             <h5>@Html.DisplayFor(x => account.AccountType)</h5>
                             <h6>Account number: @Html.DisplayFor(x => account.AccountNumber)</h6>
                             <h6>Current Balance: @Html.DisplayFor(x => account.Balance)</h6>
-                            <a href="#" class="btn btn-outline-primary shadow-none">View Statement</a>
+                            <a asp-action="Details" asp-route-accountNumber="@account.AccountNumber"
+                               class="btn btn-outline-primary shadow-none">View Statement</a>
                         </div>
                     </div>
                 </div>
