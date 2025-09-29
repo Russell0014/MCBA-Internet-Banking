@@ -8,6 +8,7 @@
 
 <div class="container mt-4">
     <form asp-action="Edit" method="post" class="card p-4">
+    <input type="hidden" asp-for="CustomerId" />
         <div class="form-group mb-3">
             <label asp-for="Name" class="form-label"></label>
             <input asp-for="Name" class="form-control" />

@@ -41,9 +41,33 @@ public class ProfileController : Controller
         return View(model);
     }
 
-    [HttpPost, ActionName("Index")]
+        // GET: Profile/Edit
+    public async Task<IActionResult> Edit()
+    {
+        int customerId = (int)HttpContext.Session.GetInt32(nameof(Customer.CustomerId))!;
+        var customer = await _context.Customers.FindAsync(customerId);
+
+        if (customer == null)
+            return NotFound();
+
+        var model = new ProfileViewModel
+        {
+            CustomerId = customer.CustomerId,
+            Name = customer.Name,
+            Address = customer.Address,
+            City = customer.City,
+            State = customer.State,
+            PostCode = customer.PostCode,
+            Mobile = customer.Mobile
+        };
+
+        return View(model);
+    }
+
+
+    [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Index(ProfileViewModel model){
+    public async Task<IActionResult> Edit(ProfileViewModel model){
 
         if (ModelState.IsValid)
         {
