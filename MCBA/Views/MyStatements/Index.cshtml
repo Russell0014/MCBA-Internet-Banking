@@ -1,12 +1,37 @@
 @model MCBA.ViewModel.MyStatementsViewModel
-
 @{
     ViewData["Title"] = "My Statements";
 }
 
-<!DOCTYPE html>
-
 <h1 class="text-center">My Statements</h1>
+<p class="text-center pb-5">Please select an account from below to view your statement.</p>
 <div>
-      
+    <div class="container">
+        <div class="row align-items-start">
+            @{ int index = 0; }
+            @foreach (var account in Model.Accounts)
+            {
+                <div class="col">
+                    <div class="card @(index == 1 ? "" : "ms-auto")" style="width: 18rem;">
+                        @if (account.AccountType == AccountType.Savings)
+                        {
+                            <img class="card-img" src="@Url.Content("~/images/wallet.svg")" alt="savings"  style="height: 250px; width: auto;"  draggable="false"/>
+                        }
+                        else
+                        {
+                            <img src="@Url.Content("~/images/card.svg")" alt="checking"  style="height: 250px; width: auto;" draggable="false"/>
+                        }
+
+                        <div class="card-body">
+                            <h5>@Html.DisplayFor(x => account.AccountType)</h5>
+                            <h6>Account number: @Html.DisplayFor(x => account.AccountNumber)</h6>
+                            <h6>Current Balance: @Html.DisplayFor(x => account.Balance)</h6>
+                            <a href="#" class="btn btn-outline-primary shadow-none">View Statement</a>
+                        </div>
+                    </div>
+                </div>
+                index++;
+            }
+        </div>
+    </div>
 </div>

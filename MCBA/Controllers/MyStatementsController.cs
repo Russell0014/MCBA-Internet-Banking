@@ -18,12 +18,15 @@ public class MyStatementsController : Controller
     // GET
     public async Task<IActionResult> Index(int accountNumber)
     {
-        var customerId =
-            (int)HttpContext.Session.GetInt32(nameof(Customer.CustomerId))!; // gets the customer ID from the session
+        int customerId = (int)HttpContext.Session.GetInt32(nameof(Customer.CustomerId))!; // gets the customer ID from the session
+        // Fetch all accounts for this customer
+        var accounts = _context.Accounts
+            .Where(a => a.CustomerId == customerId).ToList();
 
         // Create and populate the ViewModel
         var viewModel = new MyStatementsViewModel
         {
+            Accounts = accounts
         };
 
         return View(viewModel);
