@@ -61,8 +61,6 @@ public class ProfileController : Controller
             customer.PostCode = model.PostCode;
             customer.Mobile = model.Mobile;
 
-
-
             _context.Update(customer);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
