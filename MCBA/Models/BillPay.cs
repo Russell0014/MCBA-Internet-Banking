@@ -9,6 +9,13 @@ public enum PeriodType
     Monthly = 2
 }
 
+public enum StatusType
+{
+    Completed = 1,
+    InProgress = 2,
+    Failed = 3
+}
+
 public class BillPay
 {
     public int BillPayId { get; set; }
@@ -27,4 +34,6 @@ public class BillPay
     public DateTime ScheduleTimeUtc { get; set; }
 
     public PeriodType Period { get; set; }
+    
+    public StatusType Status { get; set; }
 }
