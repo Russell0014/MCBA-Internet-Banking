@@ -1,7 +1,65 @@
 @model MCBA.ViewModel.BillPayViewModel
+@{
+    ViewData["Title"] = "BillPay";
+}
 
-<h1 class="text-center">Bill Pay</h1>
-<p class="text-center pb-5">Schedule, manage, and track your bill payments with automatic processing.</p>
-<div>
+<div class="text-center pb-5">
+    <h1>Bill Pay</h1>
+    <p>Schedule, manage, and track your bill payments with automatic processing.</p>
+</div>
+
+<div class="table-responsive rounded text-center">
+
+    @if (Model.BillPayList.Count < 0)
+    {
+        <div class="text-center p-5 border rounded shadow-sm bg-light">
+            <p class="lead mb-3">
+                You don’t have any bills scheduled yet.
+            </p>
+            <p class="text-muted mb-4">
+                Set up one-time or recurring payments and let us take care of the rest.
+            </p>
+            <a asp-action="Create" type="button" class="btn btn-primary btn-lg">
+                Schedule a Bill
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="mb-5">
+            <a asp-action="Create" type="button" class="btn btn-primary btn-lg">
+                Schedule a new Bill
+            </a>
+        </div>
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-dark">
+            <tr>
+                <th>Payee</th>
+                <th>Account Number</th>
+                <th>Amount</th>
+                <th>Next Payment Date</th>
+                <th>Recurring</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var bill in Model.BillPayList)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(x => bill.PayeeId)</td>
+                    <td>@Html.DisplayFor(x => bill.AccountNumber)</td>
+                    <td>@Html.DisplayFor(x => bill.Amount)</td>
+                    <td>@Html.DisplayFor(x => bill.ScheduleTimeUtc)</td>
+                    <td>@Html.DisplayFor(x => bill.Period)</td>
+                    <td>@Html.DisplayFor(x => bill.Status)</td>
+                    <td>
+                        <button type="button" class="btn btn-danger">Cancel</button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
 
 </div>
