@@ -1,0 +1,50 @@
+@using X.PagedList.Mvc.Core
+@model MCBA.ViewModel.MyStatementsViewModel
+
+@{
+    ViewData["Title"] = "My Statements";
+}
+
+<div class="mb-5 text-center">
+    <h1>@Html.DisplayFor(x => Model.Account.AccountType) Account Statement</h1>
+    <p>Your current balance is @Html.DisplayFor(x => Model.Account.Balance) </p>
+</div>
+
+<div class="table-responsive rounded text-center">
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="table-dark">
+        <tr>
+            <th>Transaction ID</th>
+            <th>Transaction Type</th>
+            <th>Account Number</th>
+            <th>Destination Account Number</th>
+            <th>Amount</th>
+            <th>Comment</th>
+            <th>Transaction Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var transaction in Model.Transactions)
+        {
+            <tr>
+                <td>@Html.DisplayFor(x => transaction.TransactionId)</td>
+                <td>@Html.DisplayFor(x => transaction.TransactionType)</td>
+                <td>@Html.DisplayFor(x => transaction.AccountNumber)</td>
+                <td>@Html.DisplayFor(x => transaction.DestinationAccountNumber)</td>
+                <td>@Html.DisplayFor(x => transaction.Amount)</td>
+                <td>@Html.DisplayFor(x => transaction.Comment)</td>
+                <td>@Html.DisplayFor(x => transaction.TransactionTimeUtc)</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+<div class="d-flex justify-content-center mt-3">
+    @Html.PagedListPager(Model.Transactions, page => Url.Action("Details", new { accountNumber = Model.Account.AccountNumber, page }),
+        new PagedListRenderOptions
+        {
+            UlElementClasses = ["pagination", "justify-content-center"],
+            LiElementClasses = ["page-item"],
+            PageClasses = ["page-link"]
+        })
+</div>
