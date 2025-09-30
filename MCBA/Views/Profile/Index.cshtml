@@ -1,0 +1,37 @@
+@model MCBA.ViewModel.ProfileViewModel
+
+@{
+  ViewData["Title"] = "Profile";
+}
+
+<h1 class="text-center">My Profile</h1>
+
+<div class="container mt-4">
+    <dl class="row">
+        <dt class="col-sm-3">Name</dt>
+        <dd class="col-sm-9">@Model.Name</dd>
+
+        <dt class="col-sm-3">TFN</dt>
+        <dd class="col-sm-9">@Model.TFN</dd>
+
+        <dt class="col-sm-3">Address</dt>
+        <dd class="col-sm-9">@Model.Address</dd>
+
+        <dt class="col-sm-3">City</dt>
+        <dd class="col-sm-9">@Model.City</dd>
+
+        <dt class="col-sm-3">State</dt>
+        <dd class="col-sm-9">@Model.State</dd>
+
+        <dt class="col-sm-3">Postcode</dt>
+        <dd class="col-sm-9">@Model.PostCode</dd>
+
+        <dt class="col-sm-3">Mobile</dt>
+        <dd class="col-sm-9">@Model.Mobile</dd>
+    </dl>
+
+    <div class="mt-3">
+        <a asp-action="Edit" asp-controller="Profile" class="btn btn-primary">Edit Profile</a>
+        <a asp-action="Index" asp-controller="Password" class="btn btn-secondary">Change Password</a>
+    </div>
+</div>
