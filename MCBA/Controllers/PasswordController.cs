@@ -1,64 +1,57 @@
-using SimpleHashing.Net;
-
 using Microsoft.AspNetCore.Mvc;
-using MCBA.Models;
 using MCBA.Services;
-using MCBA.Data;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using SimpleHashing.Net;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using MCBA.ViewModel;
+using MCBA.Models;
 
 namespace MCBA.Controllers;
 
 public class PasswordController : Controller
 {
-    private readonly DatabaseContext _context;
+    private readonly PasswordService _passwordService;
 
-    public PasswordController(DatabaseContext context)
+    public PasswordController(PasswordService passwordService)
     {
-        _context = context;
+        _passwordService = passwordService;
     } 
 
     // GET: Password
-    public IActionResult Index(){
-        int customerId = (int)HttpContext.Session.GetInt32(nameof(Customer.CustomerId))!; // gets the customer ID from the session
-        var customer = _context.Login.Find(customerId); // finds the login info based on the customer ID
-        if (customer == null)
-        {
-            return NotFound();
-        }
-        var model = new PasswordViewModel 
-        {
-            CustomerId = customer.CustomerId,
-            Password = customer.PasswordHash
-
-        };
-
-        return View(model);
+    public IActionResult Index()
+    {
+        int customerId = (int)HttpContext.Session.GetInt32(nameof(Customer.CustomerId))!;
+        return View(new PasswordViewModel { CustomerId = customerId });
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(PasswordViewModel model){
+    public IActionResult Index(PasswordViewModel model)
+    {
+        int customerId = (int)HttpContext.Session.GetInt32(nameof(Customer.CustomerId))!;
 
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
+            return View(model);
+
+        var login = _passwordService.GetLoginByCustomerId(customerId);
+        if (login == null)
+            return NotFound();
+
+        // Verify current password
+        if (!_passwordService.VerifyPassword(login, model.CurrentPassword))
         {
-            var customer = await _context.Login.FindAsync(model.CustomerId); // finds the login based on the customer ID in the model
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
-            // Update the password of the customer
-            customer.PasswordHash = model.PasswordHash;
-
-            _context.Update(customer);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            ModelState.AddModelError("CurrentPassword", "Current password is incorrect.");
+            return View(model);
         }
+
+                // Prevent new password being same as old
+        if (_passwordService.VerifyPassword(login, model.NewPassword))
+        {
+            ModelState.AddModelError("NewPassword", "New password cannot be the same as the current password.");
+            return View(model);
+        }
+
+        // Update with new password
+        _passwordService.UpdatePassword(login, model.NewPassword);
+
+        TempData["SuccessMessage"] = "Password updated successfully!";
         return View(model);
     }
-
 }
