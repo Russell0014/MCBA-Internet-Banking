@@ -92,4 +92,47 @@ public class BillPayService
             await _context.SaveChangesAsync();
         }
     }
+
+    public async Task PayBillsAsync(CancellationToken cancellationToken)
+    {
+        var bills = await _context.BillPays
+            .Include(b => b.Account).Include(b => b.Payee) // Load Account and Payee for each bill
+            .Where(b => b.Status == StatusType.Pending &&
+                        b.ScheduleTimeUtc <= DateTime.UtcNow) // Process due or past bills
+            .ToListAsync(cancellationToken);
+
+        foreach (var bill in bills)
+        {
+            // Create and execute the transaction
+            var transaction = TransactionFactory.CreateTransaction(TransactionType.BillPay, account: bill.Account,
+                amount: bill.Amount, comment: $"BillPay to {bill.Payee.Name}");
+            var transactionService = new TransactionService(_context);
+            var success = transactionService.Execute(transaction);
+
+            if (success)
+            {
+                bill.Status = StatusType.Completed;
+                // Creates a new bill for the next month 
+                if (bill.Period == PeriodType.Monthly)
+                {
+                    var newBill = new BillPay
+                    {
+                        AccountNumber = bill.AccountNumber,
+                        PayeeId = bill.PayeeId,
+                        Amount = bill.Amount,
+                        ScheduleTimeUtc = bill.ScheduleTimeUtc.AddMonths(1), // Next month
+                        Period = bill.Period,
+                        Status = StatusType.Pending // New bill starts pending
+                    };
+                    _context.BillPays.Add(newBill); // Add the new bill as a separate bill
+                }
+            }
+            else
+            {
+                bill.Status = StatusType.Failed;
+            }
+        }
+
+        await _context.SaveChangesAsync(cancellationToken);
+    }
 }

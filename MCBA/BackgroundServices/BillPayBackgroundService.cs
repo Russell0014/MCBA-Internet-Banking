@@ -1,8 +1,8 @@
 using MCBA.Data;
-using Microsoft.EntityFrameworkCore;
+using MCBA.Services;
 
 namespace MCBA.BackgroundServices;
-//  background service for billpay
+//  background service for BillPay
 
 public class BillPayBackgroundService : BackgroundService
 {
@@ -36,13 +36,9 @@ public class BillPayBackgroundService : BackgroundService
         using var scope = _services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
-        var billPay = await context.BillPays.ToListAsync(cancellationToken);
-        foreach (var bill in billPay)
-        {
-            _logger.LogInformation(bill.ToString());
-        }
-
-        await context.SaveChangesAsync(cancellationToken);
+        // Instantiate BillPayService and process all pending bill payments
+        var billPayService = new BillPayService(context);
+        await billPayService.PayBillsAsync(cancellationToken);
 
         _logger.LogInformation("BillPay Background Service work complete.");
     }
