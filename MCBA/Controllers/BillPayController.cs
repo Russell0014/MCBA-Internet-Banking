@@ -31,13 +31,10 @@ public class BillPayController : Controller
 
     public async Task<IActionResult> Create()
     {
-        int customerId = (int)HttpContext.Session.GetInt32(nameof(Customer.CustomerId))!;
-
-
-        var accountsList = await _service.GetAccountsAsync(customerId);
+        var accountsList = await _service.GetAccountsAsync(CustomerId);
 
         var accounts = accountsList?
-            .Where(a => a.CustomerId == customerId)
+            .Where(a => a.CustomerId == CustomerId)
             .Select(a => new
             {
                 Value = a.AccountNumber,
@@ -53,5 +50,17 @@ public class BillPayController : Controller
         };
 
         return View(viewModel);
+    }
+
+    public async Task<IActionResult> Cancel(int id)
+    {
+        await _service.CancelBillPayAsync(billPayId: id, customerId: CustomerId);
+        return RedirectToAction("Index");
+    }
+
+    public async Task<IActionResult> Retry(int id)
+    {
+        await _service.RetryBillPayAsync(billPayId: id, customerId: CustomerId);
+        return RedirectToAction("Index");
     }
 }

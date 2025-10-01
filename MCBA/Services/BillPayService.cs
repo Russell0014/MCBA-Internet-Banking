@@ -47,10 +47,11 @@ public class BillPayService
     }
 
     // create new bill
-    public async Task<BillPay> CreateBillAsync(int accountNumber, int payeeId, decimal amount, DateTime scheduleTimeUtc, PeriodType period)
+    public async Task<BillPay> CreateBillAsync(int accountNumber, int payeeId, decimal amount, DateTime scheduleTimeUtc,
+        PeriodType period)
     {
         var bill = new BillPay
-        { 
+        {
             AccountNumber = accountNumber,
             PayeeId = payeeId,
             Amount = amount,
@@ -64,7 +65,29 @@ public class BillPayService
         return bill;
     }
 
+    public async Task CancelBillPayAsync(int billPayId, int customerId)
+    {
+        var bill = await _context.BillPays
+            .Where(b => b.BillPayId == billPayId && b.Account.CustomerId == customerId)
+            .SingleOrDefaultAsync();
 
-
-
+        if (bill != null)
+        {
+            _context.BillPays.Remove(bill);
+            await _context.SaveChangesAsync();
+        }
+    }
+    
+    public async Task RetryBillPayAsync(int billPayId, int customerId)
+    {
+        var bill = await _context.BillPays
+            .Where(b => b.BillPayId == billPayId && b.Account.CustomerId == customerId)
+            .SingleOrDefaultAsync();
+    
+        if (bill != null)
+        {
+            bill.Status = StatusType.Pending;
+            await _context.SaveChangesAsync();
+        }
+    }
 }

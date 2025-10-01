@@ -54,7 +54,14 @@
                     <td>@Html.DisplayFor(x => bill.Period)</td>
                     <td>@Html.DisplayFor(x => bill.Status)</td>
                     <td>
-                        <button type="button" class="btn btn-danger">Cancel</button>
+                        @if (bill.Status != StatusType.Completed)
+                        {
+                            <a asp-action="Cancel" asp-route-id="@bill.BillPayId" type="button" class="btn btn-danger">Cancel</a>
+                        }
+                        @if (bill.Status == StatusType.Failed)
+                        {
+                            <a asp-action="Retry" asp-route-id="@bill.BillPayId" type="button" class="btn btn-warning">Retry</a>
+                        }
                     </td>
                 </tr>
             }
