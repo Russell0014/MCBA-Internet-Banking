@@ -56,7 +56,7 @@ public class BillPayService
             Amount = amount,
             ScheduleTimeUtc = scheduleTimeUtc,
             Period = period,
-            Status = StatusType.InProgress // status starts as in progress
+            Status = StatusType.Pending // status starts as in progress
         };
 
         _context.BillPays.Add(bill); // add bill to table

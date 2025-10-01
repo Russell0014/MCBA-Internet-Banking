@@ -3,6 +3,8 @@ using MCBA.Models;
 using MCBA.Services;
 using MCBA.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 
 namespace MCBA.Controllers;
 
@@ -31,7 +33,7 @@ public class BillPayController : Controller
     {
         int customerId = (int)HttpContext.Session.GetInt32(nameof(Customer.CustomerId))!;
 
-        var accounts = await _billPayService.GetAccountsAsync(customerId);
+        var accounts = await _service.GetAccountsAsync(customerId);
 
         var viewModel = new CreateBillPayViewModel
         {
