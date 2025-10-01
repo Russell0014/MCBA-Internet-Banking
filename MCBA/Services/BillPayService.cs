@@ -36,6 +36,7 @@ public class BillPayService
         var accountNumbers = accounts.Select(a => a.AccountNumber).ToList();
 
         var bills = await _context.BillPays
+            .Include(b => b.Payee)
             .Where(b => accountNumbers.Contains(b.AccountNumber))
             .OrderBy(b => b.ScheduleTimeUtc)
             .ToListAsync();

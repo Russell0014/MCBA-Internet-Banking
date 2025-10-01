@@ -47,7 +47,7 @@
             @foreach (var bill in Model.BillPayList)
             {
                 <tr>
-                    <td>@Html.DisplayFor(x => bill.PayeeId)</td>
+                    <td>@Html.DisplayFor(x => bill.Payee.Name)</td>
                     <td>@Html.DisplayFor(x => bill.AccountNumber)</td>
                     <td>@Html.DisplayFor(x => bill.Amount)</td>
                     <td>@bill.ScheduleTimeUtc.ToLocalTime().ToString("g")</td>
