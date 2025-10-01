@@ -76,12 +76,12 @@ public class BillPayController : Controller
             model.AccountNumber,
             model.PayeeId,
             model.Amount,
-            model.ScheduleTimeUtc,
+            model.ScheduleTimeUtc.ToUniversalTime(),
             model.Period
         );
 
         TempData["SuccessMessage"] = "Scheduled payment created successfully!";
-        return RedirectToAction("Index"); 
+        return RedirectToAction("Index");
     }
 
 
