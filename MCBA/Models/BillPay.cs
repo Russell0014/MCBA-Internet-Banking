@@ -12,7 +12,7 @@ public enum PeriodType
 public enum StatusType
 {
     Completed = 1,
-    InProgress = 2,
+    Pending = 2,
     Failed = 3
 }
 
