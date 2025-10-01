@@ -27,12 +27,19 @@ public class BillPayController : Controller
         return View(viewModel);
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
+        int customerId = (int)HttpContext.Session.GetInt32(nameof(Customer.CustomerId))!;
+
+        var accounts = await _billPayService.GetAccountsAsync(customerId);
+
         var viewModel = new CreateBillPayViewModel
         {
-
+            Accounts = new SelectList(accounts, "AccountNumber", "AccountNumber"),
+            ScheduleTimeUtc = DateTime.UtcNow.AddDays(1), // default to tomorrow
+            Period = PeriodType.OneOff
         };
+
         return View(viewModel);
     }
 }

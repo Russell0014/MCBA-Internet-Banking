@@ -45,4 +45,26 @@ public class BillPayService
             BillPayList = bills
         };
     }
+
+    // create new bill
+    public async Task<BillPay> CreateBillAsync(int accountNumber, int payeeId, decimal amount, DateTime scheduleTimeUtc, PeriodType period)
+    {
+        var bill = new BillPay
+        { 
+            AccountNumber = accountNumber,
+            PayeeId = payeeId,
+            Amount = amount,
+            ScheduleTimeUtc = scheduleTimeUtc,
+            Period = period,
+            Status = StatusType.InProgress // status starts as in progress
+        };
+
+        _context.BillPays.Add(bill); // add bill to table
+        await _context.SaveChangesAsync();
+        return bill;
+    }
+
+
+
+
 }
