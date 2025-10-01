@@ -7,7 +7,7 @@ namespace MCBA.ViewModel;
 public class CreateBillPayViewModel
 {
 
-    public string ScheduleTimeFormatted => ScheduleTimeUtc.ToString("yyyy-MM-ddTHH:mm");
+    public string ScheduleTimeFormatted => ScheduleTimeUtc.ToLocalTime().ToString("yyyy-MM-ddTHH:mm");
 
     [Required(ErrorMessage = "Please select an account.")]
     public int AccountNumber { get; set; }
