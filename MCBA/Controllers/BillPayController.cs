@@ -33,11 +33,21 @@ public class BillPayController : Controller
     {
         int customerId = (int)HttpContext.Session.GetInt32(nameof(Customer.CustomerId))!;
 
-        var accounts = await _service.GetAccountsAsync(customerId);
+
+        var accountsList = await _service.GetAccountsAsync(customerId);
+
+        var accounts = accountsList?
+            .Where(a => a.CustomerId == customerId)
+            .Select(a => new
+            {
+                Value = a.AccountNumber,
+                Text = $"{a.AccountNumber} {a.AccountType} ({a.Balance:C})"
+            })
+            .ToList();
 
         var viewModel = new CreateBillPayViewModel
         {
-            Accounts = new SelectList(accounts, "AccountNumber", "AccountNumber"),
+            Accounts = new SelectList(accounts, "Value", "Text"),
             ScheduleTimeUtc = DateTime.UtcNow.AddDays(1), // default to tomorrow
             Period = PeriodType.OneOff
         };
