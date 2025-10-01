@@ -50,7 +50,7 @@
                     <td>@Html.DisplayFor(x => bill.PayeeId)</td>
                     <td>@Html.DisplayFor(x => bill.AccountNumber)</td>
                     <td>@Html.DisplayFor(x => bill.Amount)</td>
-                    <td>@Html.DisplayFor(x => bill.ScheduleTimeUtc)</td>
+                    <td>@bill.ScheduleTimeUtc.ToLocalTime().ToString("g")</td>
                     <td>@Html.DisplayFor(x => bill.Period)</td>
                     <td>@Html.DisplayFor(x => bill.Status)</td>
                     <td>
