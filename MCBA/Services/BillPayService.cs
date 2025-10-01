@@ -67,6 +67,7 @@ public class BillPayService
 
     public async Task CancelBillPayAsync(int billPayId, int customerId)
     {
+        // Finds the bill using BillPay id and customer id
         var bill = await _context.BillPays
             .Where(b => b.BillPayId == billPayId && b.Account.CustomerId == customerId)
             .SingleOrDefaultAsync();
@@ -77,13 +78,14 @@ public class BillPayService
             await _context.SaveChangesAsync();
         }
     }
-    
+
     public async Task RetryBillPayAsync(int billPayId, int customerId)
     {
+        // Finds the bill using BillPay id and customer id
         var bill = await _context.BillPays
             .Where(b => b.BillPayId == billPayId && b.Account.CustomerId == customerId)
             .SingleOrDefaultAsync();
-    
+
         if (bill != null)
         {
             bill.Status = StatusType.Pending;
