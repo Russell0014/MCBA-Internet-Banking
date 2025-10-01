@@ -52,6 +52,39 @@ public class BillPayController : Controller
         return View(viewModel);
     }
 
+    // POST: Handle form submission
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(CreateBillPayViewModel model)
+    {
+        int customerId = (int)HttpContext.Session.GetInt32(nameof(Customer.CustomerId))!;
+
+        if (!ModelState.IsValid)
+        {
+            // so the dropdown doesnt dissapear if rthe validation fails
+            var accountsList = await _service.GetAccountsAsync(customerId);
+            model.Accounts = new SelectList(
+                accountsList?.Select(a => new { Value = a.AccountNumber, Text = $"{a.AccountNumber} {a.AccountType} ({a.Balance:C})" }),
+                "Value",
+                "Text"
+            );
+            return View(model);
+        }
+
+        // Create the bill using the service
+        await _service.CreateBillAsync(
+            model.AccountNumber,
+            model.PayeeId,
+            model.Amount,
+            model.ScheduleTimeUtc,
+            model.Period
+        );
+
+        TempData["SuccessMessage"] = "Scheduled payment created successfully!";
+        return RedirectToAction("Index"); 
+    }
+
+
     public async Task<IActionResult> Cancel(int id)
     {
         await _service.CancelBillPayAsync(billPayId: id, customerId: CustomerId);

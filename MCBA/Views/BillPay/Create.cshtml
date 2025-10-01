@@ -34,7 +34,7 @@
 
     <div class="mb-3">
         <label asp-for="ScheduleTimeUtc" class="form-label"></label>
-        <input asp-for="ScheduleTimeUtc" class="form-control" type="datetime-local" />
+       <input asp-for="ScheduleTimeUtc" class="form-control" type="datetime-local" value="@Model.ScheduleTimeFormatted" />
         <span asp-validation-for="ScheduleTimeUtc" class="text-danger"></span>
     </div>
 
