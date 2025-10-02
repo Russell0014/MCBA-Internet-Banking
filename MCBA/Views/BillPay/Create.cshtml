@@ -1,0 +1,98 @@
+@model MCBA.ViewModel.CreateBillPayViewModel
+@{
+  ViewData["Title"] = "Create BillPay";
+}
+
+<div class="text-center">
+  <h1>Create a new scheduled payment</h1>
+  <p>Please complete the form below to make a new scheduled payment.</p>
+</div>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-7">
+      <div class="card shadow-sm">
+        <div class="card-body p-4 p-md-5">
+          <div class="d-flex align-items-center mb-4">
+            <h1 class="h4 mb-0">Schedule payment</h1>
+          </div>
+
+          <form asp-action="Create" method="post">
+            <div class="mb-3">
+              <label asp-for="AccountNumber" class="form-label">Account</label>
+              <div class="input-group">
+                <span class="input-group-text" id="acc-addon">Acct</span>
+                <select asp-for="AccountNumber" class="form-select shadow-none" asp-items="Model.Accounts" required>
+                  <option value="" selected disabled>Select an account</option>
+                </select>
+              </div>
+              <span asp-validation-for="AccountNumber" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+              <label asp-for="PayeeId" class="form-label"></label>
+              <div class="input-group">
+                <span class="input-group-text" id="payeeId-addon">Payee</span>
+                <input asp-for="PayeeId" placeholder="Enter Payee number" type="text" class="form-control"/>
+              </div>
+              <span asp-validation-for="PayeeId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+              <label asp-for="Amount" class="form-label">Amount</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input
+                  asp-for="Amount"
+                  type="number"
+                  class="form-control shadow-none"
+                  step="0.01"
+                  min="0.01"
+                  required
+                />
+                <span class="input-group-text">AUD</span>
+              </div>
+              <div class="form-text">Use decimals for cents, e.g. 25.50.</div>
+              <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+              <label asp-for="ScheduleTimeUtc" class="form-label"></label>
+              <input asp-for="ScheduleTimeUtc" class="form-control" type="datetime-local"
+                     min="@Model.ScheduleTimeFormatted"/>
+              <span asp-validation-for="ScheduleTimeUtc" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+              <label asp-for="Period" class="form-label"></label>
+              <select asp-for="Period" class="form-select" asp-items="Html.GetEnumSelectList<PeriodType>()">
+              </select>
+              <span asp-validation-for="Period" class="text-danger"></span>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Schedule Payment</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+
+          </form>
+
+          <div class="mt-4">
+            @if (TempData["ErrorMessage"] != null)
+            {
+              <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+            }
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+  @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+  <script>
+    // Clear the PayeeId number field on load to override model default
+    document.getElementById('PayeeId').value = '';
+  </script>
+}

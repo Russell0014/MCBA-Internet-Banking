@@ -1,3 +1,4 @@
+using MCBA.BackgroundServices;
 using MCBA.Data;
 using MCBA.Services;
 using MCBA.Filters;
@@ -31,7 +32,12 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+// BillPay background service
+builder.Services.AddHostedService<BillPayBackgroundService>();
+
+// Registers controllers with support for views
 builder.Services.AddControllersWithViews();
+
 // Global authorisation check
 builder.Services.AddControllersWithViews(options => options.Filters.Add(new AuthorizeCustomerAttribute()));
 

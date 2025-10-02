@@ -5,8 +5,16 @@ namespace MCBA.Models;
 
 public enum PeriodType
 {
+    [Display(Name = "One Off")]
     OneOff = 1,
     Monthly = 2
+}
+
+public enum StatusType
+{
+    Completed = 1,
+    Pending = 2,
+    Failed = 3
 }
 
 public class BillPay
@@ -27,4 +35,6 @@ public class BillPay
     public DateTime ScheduleTimeUtc { get; set; }
 
     public PeriodType Period { get; set; }
+    
+    public StatusType Status { get; set; }
 }
