@@ -28,7 +28,11 @@
         {
             <tr>
                 <td>@Html.DisplayFor(x => transaction.TransactionId)</td>
-                <td>@Html.DisplayFor(x => transaction.TransactionType)</td>
+                <td>
+                    @(transaction.TransactionType == TransactionType.Transfer
+                        ? (transaction.DestinationAccount != null ? "Transfer Outgoing" : "Transfer Incoming")
+                        : Html.DisplayFor(x => transaction.TransactionType))
+                </td>
                 <td>@Html.DisplayFor(x => transaction.AccountNumber)</td>
                 <td>@Html.DisplayFor(x => transaction.DestinationAccountNumber)</td>
                 <td>@Html.DisplayFor(x => transaction.Amount)</td>
