@@ -1,7 +1,10 @@
 using MCBA.BackgroundServices;
 using MCBA.Data;
+using MCBA.Services;
 using MCBA.Filters;
 using Microsoft.EntityFrameworkCore;
+using SimpleHashing.Net;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,13 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
     // Enable lazy loading.
     options.UseLazyLoadingProxies();
 });
+
+// For password hashing
+builder.Services.AddSingleton<ISimpleHash, SimpleHash>();
+// for DI password
+builder.Services.AddScoped<PasswordService>();
+
+
 
 // Store session into Web-Server memory.
 builder.Services.AddDistributedMemoryCache();

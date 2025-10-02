@@ -33,7 +33,7 @@
                 <td>@Html.DisplayFor(x => transaction.DestinationAccountNumber)</td>
                 <td>@Html.DisplayFor(x => transaction.Amount)</td>
                 <td>@Html.DisplayFor(x => transaction.Comment)</td>
-                <td>@Html.DisplayFor(x => transaction.TransactionTimeUtc)</td>
+                <td>@transaction.TransactionTimeUtc.ToLocalTime().ToString("g")</td>
             </tr>
         }
         </tbody>
