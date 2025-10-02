@@ -50,7 +50,7 @@
                     <td>@Html.DisplayFor(x => bill.Payee.Name)</td>
                     <td>@Html.DisplayFor(x => bill.AccountNumber)</td>
                     <td>@Html.DisplayFor(x => bill.Amount)</td>
-                    <td>@bill.ScheduleTimeUtc.ToLocalTime().ToString("g")</td>
+                    <td class="@(bill.Status == StatusType.Completed ? "text-decoration-line-through": "" )">@bill.ScheduleTimeUtc.ToLocalTime().ToString("g")</td>
                     <td>@Html.DisplayFor(x => bill.Period)</td>
                     <td>@Html.DisplayFor(x => bill.Status)</td>
                     <td>
