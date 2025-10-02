@@ -45,7 +45,6 @@ public class BillPayController : Controller
         var viewModel = new CreateBillPayViewModel
         {
             Accounts = new SelectList(accounts, "Value", "Text"),
-            ScheduleTimeUtc = DateTime.UtcNow.AddDays(1), // default to tomorrow
             Period = PeriodType.OneOff
         };
 
@@ -61,26 +60,36 @@ public class BillPayController : Controller
 
         if (!ModelState.IsValid)
         {
-            // so the dropdown doesnt dissapear if rthe validation fails
-            var accountsList = await _service.GetAccountsAsync(customerId);
-            model.Accounts = new SelectList(
-                accountsList?.Select(a => new { Value = a.AccountNumber, Text = $"{a.AccountNumber} {a.AccountType} ({a.Balance:C})" }),
-                "Value",
-                "Text"
-            );
+            await PopulateAccounts(model, customerId);
             return View(model);
         }
+
+        // Check payee existence
+        if (!await _service.CheckPayeeId(model.PayeeId))
+        {
+            TempData["ErrorMessage"] = "Invalid Payee Number";
+            await PopulateAccounts(model, customerId);
+            return View(model);
+        }
+
+        // Check schedule time is in the future
+        if (!model.ScheduleTimeUtc.HasValue || model.ScheduleTimeUtc.Value <= DateTime.UtcNow)
+        {
+            TempData["ErrorMessage"] = "Please enter a schedule time in the future.";
+            await PopulateAccounts(model, customerId);
+            return View(model);
+        }
+
 
         // Create the bill using the service
         await _service.CreateBillAsync(
             model.AccountNumber,
             model.PayeeId,
             model.Amount,
-            model.ScheduleTimeUtc.ToUniversalTime(),
+            model.ScheduleTimeUtc.Value.ToUniversalTime(),
             model.Period
         );
 
-        TempData["SuccessMessage"] = "Scheduled payment created successfully!";
         return RedirectToAction("Index");
     }
 
@@ -95,5 +104,17 @@ public class BillPayController : Controller
     {
         await _service.RetryBillPayAsync(billPayId: id, customerId: CustomerId);
         return RedirectToAction("Index");
+    }
+
+    // Helper method to populate accounts in the view model
+    private async Task PopulateAccounts(CreateBillPayViewModel model, int customerId)
+    {
+        var accountsList = await _service.GetAccountsAsync(customerId);
+        model.Accounts = new SelectList(
+            accountsList?.Select(a => new
+            { Value = a.AccountNumber, Text = $"{a.AccountNumber} {a.AccountType} ({a.Balance:C})" }),
+            "Value",
+            "Text"
+        );
     }
 }

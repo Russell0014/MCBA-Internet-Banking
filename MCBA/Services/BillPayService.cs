@@ -47,8 +47,14 @@ public class BillPayService
         };
     }
 
+    // Check if payee exists 
+    public async Task<bool> CheckPayeeId(int payeeId)
+    {
+        return await _context.Payees.AnyAsync(p => p.PayeeId == payeeId);
+    }
+
     // create new bill
-    public async Task<BillPay> CreateBillAsync(int accountNumber, int payeeId, decimal amount, DateTime scheduleTimeUtc,
+    public async Task CreateBillAsync(int accountNumber, int payeeId, decimal amount, DateTime scheduleTimeUtc,
         PeriodType period)
     {
         var bill = new BillPay
@@ -63,7 +69,6 @@ public class BillPayService
 
         _context.BillPays.Add(bill); // add bill to table
         await _context.SaveChangesAsync();
-        return bill;
     }
 
     public async Task CancelBillPayAsync(int billPayId, int customerId)

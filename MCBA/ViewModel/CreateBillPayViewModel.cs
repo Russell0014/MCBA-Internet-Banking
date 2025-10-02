@@ -6,8 +6,7 @@ namespace MCBA.ViewModel;
 
 public class CreateBillPayViewModel
 {
-
-    public string ScheduleTimeFormatted => ScheduleTimeUtc.ToLocalTime().ToString("yyyy-MM-ddTHH:mm");
+    public string ScheduleTimeFormatted => DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm");
 
     [Required(ErrorMessage = "Please select an account.")]
     public int AccountNumber { get; set; }
@@ -25,7 +24,7 @@ public class CreateBillPayViewModel
     [Required(ErrorMessage = "Schedule time is required.")]
     [DataType(DataType.DateTime, ErrorMessage = "Please enter a valid date and time.")]
     [Display(Name = "Schedule Time")] // Changed: Removed "UTC" for user clarity
-    public DateTime ScheduleTimeUtc { get; set; }
+    public DateTime? ScheduleTimeUtc { get; set; }
 
     [Required(ErrorMessage = "Period is required.")]
     [Display(Name = "Payment Period")]

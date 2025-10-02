@@ -59,7 +59,7 @@
             <div class="mb-3">
               <label asp-for="ScheduleTimeUtc" class="form-label"></label>
               <input asp-for="ScheduleTimeUtc" class="form-control" type="datetime-local"
-                     value="@Model.ScheduleTimeFormatted"/>
+                     min="@Model.ScheduleTimeFormatted"/>
               <span asp-validation-for="ScheduleTimeUtc" class="text-danger"></span>
             </div>
 
@@ -75,7 +75,7 @@
             <a asp-action="Index" class="btn btn-secondary">Cancel</a>
 
           </form>
-          
+
           <div class="mt-4">
             @if (TempData["ErrorMessage"] != null)
             {
