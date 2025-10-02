@@ -15,6 +15,7 @@ public class CreateBillPayViewModel
     public SelectList? Accounts { get; set; }
 
     [Required(ErrorMessage = "Payee number is required.")]
+    [Display(Name = "Payee Number")]
     public int PayeeId { get; set; }
 
     [Required(ErrorMessage = "Amount is required.")]
