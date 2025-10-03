@@ -7,12 +7,11 @@
 <p class="text-center pb-5">Please select an account from below to view your statement.</p>
 <div>
     <div class="container">
-        <div class="row align-items-start">
-            @{ int index = 0; }
+        <div class="row align-items-start justify-content-center">
             @foreach (var account in Model.Accounts)
             {
-                <div class="col">
-                    <div class="card @(index == 1 ? "" : "ms-auto")" style="width: 18rem;">
+                <div class="col-auto">
+                    <div class="card" style="width: 18rem;">
                         @if (account.AccountType == AccountType.Savings)
                         {
                             <img class="card-img" src="@Url.Content("~/images/wallet.svg")" alt="savings"
@@ -33,7 +32,6 @@
                         </div>
                     </div>
                 </div>
-                index++;
             }
         </div>
     </div>

@@ -60,8 +60,7 @@ public class TransactionService
             {
                 Account = transaction.Account,
                 Amount = transaction.Fee,
-                Comment =
-                    "Service Charge",
+                Comment = transaction.TransactionType == TransactionType.Withdraw ? "Withdraw Fee" : "Transfer Fee",
                 TransactionType = TransactionType.ServiceCharge,
                 TransactionTimeUtc = DateTime.UtcNow
             });

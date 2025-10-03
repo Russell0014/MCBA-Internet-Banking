@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MCBA.Models;
@@ -8,6 +9,7 @@ public enum TransactionType
     Deposit = 1,
     Withdraw = 2,
     Transfer = 3,
+    [Display(Name = "Service Charge")] 
     ServiceCharge = 4,
     BillPay = 5
 }
