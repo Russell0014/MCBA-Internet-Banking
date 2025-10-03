@@ -1,3 +1,11 @@
+using Microsoft.EntityFrameworkCore;
+using AdminApi.Data;
+using AdminApi.Models.DataManager;
+using AdminApi.Models.Repository;
+using Microsoft.OpenApi.Models;
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
