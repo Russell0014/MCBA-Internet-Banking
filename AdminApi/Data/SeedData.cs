@@ -22,28 +22,6 @@ public class SeedData
             Converters = { new AccountTypeConverter() }
         };
 
-        var customers = JsonConvert.DeserializeObject<Customer[]>(json, settings);
-
-        if (context.Customers.Any())
-            return;
-
-        // Sets TransactionType to Deposit and calculates balances
-        foreach (var customer in customers)
-        foreach (var account in customer.Accounts)
-        {
-            decimal balance = 0;
-            foreach (var transaction in account.Transactions)
-            {
-                transaction.TransactionType = TransactionType.Deposit;
-                balance += transaction.Amount;
-            }
-
-            account.Balance = balance;
-        }
-
-        // Adds to db context
-        foreach (var customer in customers) context.Customers.Add(customer);
-
         //Adds payee seed data
         context.AddRange(
             new Payee
@@ -78,6 +56,5 @@ public class SeedData
         // Save changes to the database
         context.SaveChanges();
 
-        Console.WriteLine($"Successfully seeded {customers.Length} customers to the database.");
     }
 }

@@ -21,13 +21,8 @@ public class Account
     [EnumDataType(typeof(AccountType), ErrorMessage = "Invalid account type.")]
     public AccountType AccountType { get; set; }
 
-    public int CustomerId { get; set; }
-    public virtual Customer Customer { get; set; }
-
     [Column(TypeName = "money")]
     [DataType(DataType.Currency)]
     public decimal Balance { get; set; }
 
-    // Set ambiguous navigation property with InverseProperty annotation
-    [InverseProperty("Account")] public virtual List<Transaction> Transactions { get; set; }
 }
