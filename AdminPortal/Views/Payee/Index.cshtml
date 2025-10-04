@@ -8,37 +8,60 @@
     <h2 class="text-center mb-4">Payees</h2>
 
     <div class="table-responsive">
-        <table class="table table-striped table-hover table-bordered align-middle shadow-sm">
-            <thead class="table-dark text-center">
-            <tr>
-                <th>@Html.DisplayNameFor(model => model.PayeeId)</th>
-                <th>@Html.DisplayNameFor(model => model.Name)</th>
-                <th>@Html.DisplayNameFor(model => model.Address)</th>
-                <th>@Html.DisplayNameFor(model => model.City)</th>
-                <th>@Html.DisplayNameFor(model => model.State)</th>
-                <th>@Html.DisplayNameFor(model => model.Postcode)</th>
-                <th>@Html.DisplayNameFor(model => model.Phone)</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody class="text-center">
-            @foreach (var payee in Model)
-            {
+
+        <form method="get" asp-action="Filter" class="d-flex align-items-center justify-content-center my-4"
+              role="search">
+            <label class="me-2 mb-0 fw-bold">Filter by Postcode:</label>
+            <input name="postCode" id="searchInput" class="form-control me-2" type="search" placeholder="Search..."
+                   aria-label="Search"
+                   style="max-width: 250px;">
+            <button class="btn btn-success me-2" type="submit">Search</button>
+            <a asp-action="Index" class="btn btn-outline-secondary" type="reset">Clear</a>
+        </form>
+
+        @if (!Model.Any())
+        {
+            <div class="alert alert-warning text-center">
+                No payees found matching your filter.
+            </div>
+        }
+
+        else
+        {
+            <table class="table table-striped table-hover table-bordered align-middle shadow-sm">
+                <thead class="table-dark text-center">
                 <tr>
-                    <td>@Html.DisplayFor(p => payee.PayeeId)</td>
-                    <td>@Html.DisplayFor(p => payee.Name)</td>
-                    <td>@Html.DisplayFor(p => payee.Address)</td>
-                    <td>@Html.DisplayFor(p => payee.City)</td>
-                    <td>@Html.DisplayFor(p => payee.State)</td>
-                    <td>@Html.DisplayFor(p => payee.Postcode)</td>
-                    <td>@Html.DisplayFor(p => payee.Phone)</td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@payee.PayeeId" class="btn btn-sm btn-primary me-2">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@payee.PayeeId" class="btn btn-sm btn-danger">Delete</a>
-                    </td>
+                    <th>@Html.DisplayNameFor(model => model.PayeeId)</th>
+                    <th>@Html.DisplayNameFor(model => model.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.Address)</th>
+                    <th>@Html.DisplayNameFor(model => model.City)</th>
+                    <th>@Html.DisplayNameFor(model => model.State)</th>
+                    <th>@Html.DisplayNameFor(model => model.Postcode)</th>
+                    <th>@Html.DisplayNameFor(model => model.Phone)</th>
+                    <th>Actions</th>
                 </tr>
-            }
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="text-center">
+                @foreach (var payee in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(p => payee.PayeeId)</td>
+                        <td>@Html.DisplayFor(p => payee.Name)</td>
+                        <td>@Html.DisplayFor(p => payee.Address)</td>
+                        <td>@Html.DisplayFor(p => payee.City)</td>
+                        <td>@Html.DisplayFor(p => payee.State)</td>
+                        <td>@Html.DisplayFor(p => payee.Postcode)</td>
+                        <td>@Html.DisplayFor(p => payee.Phone)</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@payee.PayeeId"
+                               class="btn btn-sm btn-primary me-2">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@payee.PayeeId"
+                               class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
     </div>
 </div>

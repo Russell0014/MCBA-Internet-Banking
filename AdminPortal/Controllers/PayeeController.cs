@@ -6,7 +6,6 @@ namespace AdminPortal.Controllers;
 
 public class PayeeController : Controller
 {
-    
     private readonly HttpClient _client;
 
     public PayeeController(IHttpClientFactory clientFactory)
@@ -27,5 +26,25 @@ public class PayeeController : Controller
         var payees = JsonConvert.DeserializeObject<List<PayeeDto>>(result);
 
         return View(payees);
+    }
+
+    public async Task<IActionResult> Filter([FromQuery] string? postCode)
+    {
+        if (string.IsNullOrEmpty(postCode))
+        {
+            // Handle empty search by showing all payees
+            return RedirectToAction(nameof(Index));
+        }
+
+        using var response = await _client.GetAsync($"api/Payees/filter?postcode={postCode}");
+
+        response.EnsureSuccessStatusCode();
+
+        var result = await response.Content.ReadAsStringAsync();
+
+        var payees = JsonConvert.DeserializeObject<List<PayeeDto>>(result);
+
+
+        return View("Index", payees);
     }
 }
