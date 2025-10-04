@@ -13,7 +13,7 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
-            <a class="navbar-brand" asp-area="" asp-controller="Admin" asp-action="Index">Admin Portal</a>
+            <a class="navbar-brand" asp-area="" asp-controller="Payee" asp-action="Index">Admin Portal</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                     aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -27,10 +27,10 @@
                     @if (isLoggedIn)
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="" asp-action="">Payee</a>
+                            <a class="nav-link text-dark" asp-controller="Payee" asp-action="Index">Payee</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="" asp-action="">BillPay</a>
+                            <a class="nav-link text-dark" asp-controller="BillPay" asp-action="Index">BillPay</a>
                         </li>
                     }
                 </ul>

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AdminPortal.Controllers;
 
-public class AdminController : Controller
+public class PayeeController : Controller
 {
     public IActionResult Index()
     {

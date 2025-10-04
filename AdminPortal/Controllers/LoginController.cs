@@ -14,7 +14,7 @@ public class LoginController : Controller
         var isAdmin = HttpContext.Session.GetString("IsAdmin");
         if (!string.IsNullOrEmpty(isAdmin))
         {
-            return RedirectToAction("Index", "Admin"); 
+            return RedirectToAction("Index", "Payee"); 
         }
 
         return View();
@@ -33,7 +33,7 @@ public class LoginController : Controller
         // Set admin session flag
         HttpContext.Session.SetString("IsAdmin", "true");
 
-        return RedirectToAction("Index", "Admin");
+        return RedirectToAction("Index", "Payee");
     }
 
     [Route("LogoutNow")]
