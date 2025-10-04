@@ -1,7 +1,44 @@
-@model dynamic
+@model IEnumerable<PayeeDto>
 
 @{
     ViewData["Title"] = "Admin - Payee";
 }
 
-<h2 class="text-center">Payee</h2>
+<div class="container my-5">
+    <h2 class="text-center mb-4">Payees</h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered align-middle shadow-sm">
+            <thead class="table-dark text-center">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.PayeeId)</th>
+                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                <th>@Html.DisplayNameFor(model => model.Address)</th>
+                <th>@Html.DisplayNameFor(model => model.City)</th>
+                <th>@Html.DisplayNameFor(model => model.State)</th>
+                <th>@Html.DisplayNameFor(model => model.Postcode)</th>
+                <th>@Html.DisplayNameFor(model => model.Phone)</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody class="text-center">
+            @foreach (var payee in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(p => payee.PayeeId)</td>
+                    <td>@Html.DisplayFor(p => payee.Name)</td>
+                    <td>@Html.DisplayFor(p => payee.Address)</td>
+                    <td>@Html.DisplayFor(p => payee.City)</td>
+                    <td>@Html.DisplayFor(p => payee.State)</td>
+                    <td>@Html.DisplayFor(p => payee.Postcode)</td>
+                    <td>@Html.DisplayFor(p => payee.Phone)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@payee.PayeeId" class="btn btn-sm btn-primary me-2">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@payee.PayeeId" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
