@@ -33,7 +33,7 @@
                     <td>@Html.DisplayFor(p => billPay.Period)</td>
                     <td>@Html.DisplayFor(p => billPay.Status)</td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@billPay.PayeeId" class="btn btn-sm btn-danger me-2">Block</a>
+                        <a asp-action="Block" asp-route-id="@billPay.BillPayId" class="btn btn-sm btn-danger me-2">Block</a>
                     </td>
                 </tr>
             }
