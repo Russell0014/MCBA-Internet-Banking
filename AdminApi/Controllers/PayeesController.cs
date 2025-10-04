@@ -4,33 +4,33 @@ using AdminApi.Models;
 using Microsoft.EntityFrameworkCore; 
 using System.Collections.Generic; 
 using System.Threading.Tasks; 
+using AdminApi.Models.Repository;
 
 [ApiController]
 [Route("api/[controller]")]
 // controller class for payees
 public class PayeesController : ControllerBase
 {
-    private readonly DatabaseContext _context;
+    private readonly IPayeeRepository _repo;
 
-    public PayeesController(DatabaseContext context)
+    public PayeesController(IPayeeRepository repo)
     {
-        _context = context;
+        _repo = repo;
     }
 
     // GET: api/payees
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Payee>>> GetPayees()
     {
-        return await _context.Payees.ToListAsync();
+        var payees = await _repo.GetAllAsync();
+        return Ok(payees);
     }
 
     // GET: api payees by postcode
     [HttpGet("filter")]
     public async Task<ActionResult<IEnumerable<Payee>>> GetPayeesByPostcode([FromQuery] string postcode)
     {
-        var payees = await _context.Payees
-            .Where(p => p.Postcode.Contains(postcode))
-            .ToListAsync();
+        var payees = await _repo.GetByPostcodeAsync(postcode);
         return Ok(payees);
     }
 }

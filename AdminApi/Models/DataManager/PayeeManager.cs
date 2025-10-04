@@ -15,7 +15,7 @@ namespace AdminApi.Models.DataManager
 
         // get all payees
 
-        public async Task<List<Payee>> GetAllAsync()
+        public async Task<IEnumerable<Payee>> GetAllAsync()
         {
             return await _context.Payees.ToListAsync();
         }
@@ -29,10 +29,10 @@ namespace AdminApi.Models.DataManager
 
         // get payees by postcode
 
-        public async Task<List<Payee>> GetByPostcodeAsync(string postcode)
+        public async Task<IEnumerable<Payee>> GetByPostcodeAsync(string postcode)
         {
             return await _context.Payees
-                .Where(p => p.Postcode == postcode)
+                .Where(p => p.Postcode.Contains(postcode))
                 .ToListAsync();
         }
 
