@@ -29,16 +29,6 @@ var app = builder.Build();
 // Seed data.
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
-try
-{
-    SeedData.Initialize(services);
-}
-catch (Exception ex)
-{
-    var logger = services.GetRequiredService<ILogger<Program>>();
-    logger.LogError(ex, "An error occurred seeding the DB.");
-}
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
