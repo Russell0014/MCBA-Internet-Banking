@@ -18,7 +18,7 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
     // Enable lazy loading (same as MCBA)
     options.UseLazyLoadingProxies();
 });
-
+builder.Services.AddScoped<IPayeeRepository, PayeeManager>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
