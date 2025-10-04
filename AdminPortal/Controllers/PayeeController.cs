@@ -17,7 +17,6 @@ public class PayeeController : Controller
     public async Task<IActionResult> Index()
     {
         using var response = await _client.GetAsync("api/Payees");
-        //using var response = await MovieApi.InitializeClient().GetAsync("api/movies");
 
         response.EnsureSuccessStatusCode();
 
