@@ -53,7 +53,7 @@ public class SeedData
                 City = "Melbourne",
                 State = "VIC",
                 Postcode = "3000",
-                Phone = "1300 368 387"
+                Phone = "(03) 8647 4000"
             },
             new Payee
             {
@@ -62,7 +62,7 @@ public class SeedData
                 City = "Sydney",
                 State = "NSW",
                 Postcode = "2113",
-                Phone = "02 7233 2612"
+                Phone = "(02) 7233 2612"
             },
             new Payee
             {
@@ -71,7 +71,7 @@ public class SeedData
                 City = "Docklands",
                 State = "VIC",
                 Postcode = "3008",
-                Phone = "1800 775 329"
+                Phone = "(03) 9077 5329"
             }
         );
 
