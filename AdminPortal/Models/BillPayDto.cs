@@ -14,7 +14,8 @@ public class BillPayDto
     {
         Completed = 1,
         Pending = 2,
-        Failed = 3
+        Failed = 3,
+        Blocked = 4
     }
 
     public int BillPayId { get; set; }

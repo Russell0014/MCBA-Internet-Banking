@@ -16,7 +16,7 @@ public class BillPayController : Controller
     public async Task<IActionResult> Index()
     {
         // Update api call to billpay
-        using var response = await _client.GetAsync("api/Payees");
+        using var response = await _client.GetAsync("api/BillPay");
 
         response.EnsureSuccessStatusCode();
 
@@ -27,5 +27,23 @@ public class BillPayController : Controller
         var billpays = JsonConvert.DeserializeObject<List<BillPayDto>>(result);
 
         return View(billpays);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> BlockBillPay(int id)
+    {
+        using var content = new StringContent("");
+        await _client.PutAsync($"api/BillPay/{id}/block", content);
+    
+        return RedirectToAction(nameof(Index));
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> UnblockBillPay(int id)
+    {
+        using var content = new StringContent("");
+        await _client.PutAsync($"api/BillPay/{id}/unblock", content);
+    
+        return RedirectToAction(nameof(Index));
     }
 }

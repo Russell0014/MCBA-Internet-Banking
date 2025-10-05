@@ -33,7 +33,20 @@
                     <td>@Html.DisplayFor(p => billPay.Period)</td>
                     <td>@Html.DisplayFor(p => billPay.Status)</td>
                     <td>
-                        <a asp-action="Block" asp-route-id="@billPay.BillPayId" class="btn btn-sm btn-danger me-2">Block</a>
+                        @if (billPay.Status == BillPayDto.StatusType.Pending)
+                        {
+                            <form asp-action="BlockBillPay" asp-route-id="@billPay.BillPayId" method="post"
+                                  class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-danger me-2">Block</button>
+                            </form>
+                        }
+                        else if (billPay.Status == BillPayDto.StatusType.Blocked)
+                        {
+                            <form asp-action="UnblockBillPay" asp-route-id="@billPay.BillPayId" method="post"
+                                  class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-success me-2">Unblock</button>
+                            </form>
+                        }
                     </td>
                 </tr>
             }
