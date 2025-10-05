@@ -36,11 +36,11 @@ namespace AdminApi.Models.DataManager
                 .ToListAsync();
         }
 
-        // save changes
+        // update payee details
 
         public async Task UpdateAsync(Payee payee)
         {
-            _context.Payees.Update(payee);
+            _context.Entry(payee).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
     }
