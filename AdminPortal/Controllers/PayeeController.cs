@@ -47,4 +47,50 @@ public class PayeeController : Controller
 
         return View("Index", payees);
     }
+
+    public async Task<IActionResult> Edit(string id)
+    {
+        // handle input that aren't numbers
+        if (!int.TryParse(id, out var idPayee))
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        var response = await _client.GetAsync($"api/Payees/{idPayee}");
+
+        response.EnsureSuccessStatusCode();
+
+        var result = await response.Content.ReadAsStringAsync();
+
+        var payee = JsonConvert.DeserializeObject<PayeeDto>(result);
+
+        if (payee == null)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        return View(payee);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(PayeeDto model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var json = JsonConvert.SerializeObject(model);
+        var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+        using var response = await _client.PutAsync($"api/Payees/{model.PayeeId}", content);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        return View(model);
+    }
 }
