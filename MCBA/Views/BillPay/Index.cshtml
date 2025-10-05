@@ -54,7 +54,7 @@
                     <td>@Html.DisplayFor(x => bill.Period)</td>
                     <td>@Html.DisplayFor(x => bill.Status)</td>
                     <td>
-                        @if (bill.Status != StatusType.Completed)
+                        @if (bill.Status == StatusType.Pending)
                         {
                             <a asp-action="Cancel" asp-route-id="@bill.BillPayId" type="button" class="btn btn-danger">Cancel</a>
                         }
