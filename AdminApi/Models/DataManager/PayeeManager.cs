@@ -43,5 +43,16 @@ namespace AdminApi.Models.DataManager
             _context.Entry(payee).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+
+        // block/ unblock bill
+
+        public async Task UpdateBillStatus(int billPayId, StatusType status)
+        {
+            var billPay = await _context.BillPays.FindAsync(billPayId);
+
+            billPay.Status = status;
+            _context.Entry(billPay).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
     }
 }
