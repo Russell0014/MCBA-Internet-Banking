@@ -33,6 +33,16 @@ public class PayeesController : ControllerBase
         var payees = await _repo.GetByPostcodeAsync(postcode);
         return Ok(payees);
     }
+    
+    // GET: get payee by id
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Payee>> GetPayee(int id)
+    {
+        var payee = await _repo.GetByIdAsync(id);
+        
+        return Ok(payee);
+    }
+
 
     // PUT : update payee details
     [HttpPut("{id}")]
