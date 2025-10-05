@@ -19,6 +19,7 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseLazyLoadingProxies();
 });
 builder.Services.AddScoped<IPayeeRepository, PayeeManager>();
+builder.Services.AddScoped<IBillPayRepository, BillPayManager>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

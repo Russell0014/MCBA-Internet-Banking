@@ -14,7 +14,8 @@ public enum StatusType
 {
     Completed = 1,
     Pending = 2,
-    Failed = 3
+    Failed = 3,
+    Blocked = 4
 }
 
 public class BillPay
