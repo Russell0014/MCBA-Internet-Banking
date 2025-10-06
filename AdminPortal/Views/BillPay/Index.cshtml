@@ -1,0 +1,56 @@
+@model IEnumerable<BillPayDto>
+
+@{
+    ViewData["Title"] = "Admin - BillPay";
+}
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">BillPay</h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered align-middle shadow-sm">
+            <thead class="table-dark text-center">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.BillPayId)</th>
+                <th>@Html.DisplayNameFor(model => model.AccountNumber)</th>
+                <th>@Html.DisplayNameFor(model => model.PayeeId)</th>
+                <th>@Html.DisplayNameFor(model => model.Amount)</th>
+                <th>@Html.DisplayNameFor(model => model.ScheduleTimeUtc)</th>
+                <th>@Html.DisplayNameFor(model => model.Period)</th>
+                <th>@Html.DisplayNameFor(model => model.Status)</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody class="text-center">
+            @foreach (var billPay in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(p => billPay.BillPayId)</td>
+                    <td>@Html.DisplayFor(p => billPay.AccountNumber)</td>
+                    <td>@Html.DisplayFor(p => billPay.PayeeId)</td>
+                    <td>@Html.DisplayFor(p => billPay.Amount)</td>
+                    <td>@Html.DisplayFor(p => billPay.ScheduleTimeUtc)</td>
+                    <td>@Html.DisplayFor(p => billPay.Period)</td>
+                    <td>@Html.DisplayFor(p => billPay.Status)</td>
+                    <td>
+                        @if (billPay.Status == BillPayDto.StatusType.Pending)
+                        {
+                            <form asp-action="BlockBillPay" asp-route-id="@billPay.BillPayId" method="post"
+                                  class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-danger me-2">Block</button>
+                            </form>
+                        }
+                        else if (billPay.Status == BillPayDto.StatusType.Blocked)
+                        {
+                            <form asp-action="UnblockBillPay" asp-route-id="@billPay.BillPayId" method="post"
+                                  class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-success me-2">Unblock</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
