@@ -1,0 +1,47 @@
+using Microsoft.EntityFrameworkCore;
+using AdminApi.Data;
+using AdminApi.Models.DataManager;
+using AdminApi.Models.Repository;
+using Microsoft.OpenApi.Models;
+
+
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+// Register DatabaseContext (same as MCBA)
+builder.Services.AddDbContext<DatabaseContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(DatabaseContext)));
+
+    // Enable lazy loading (same as MCBA)
+    options.UseLazyLoadingProxies();
+});
+builder.Services.AddScoped<IPayeeRepository, PayeeManager>();
+builder.Services.AddScoped<IBillPayRepository, BillPayManager>();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddControllers();
+
+var app = builder.Build();
+
+// Seed data.
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();

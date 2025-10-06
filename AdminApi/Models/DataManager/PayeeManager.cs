@@ -1,0 +1,58 @@
+using AdminApi.Models.Repository;
+using AdminApi.Data;
+using Microsoft.EntityFrameworkCore;
+
+namespace AdminApi.Models.DataManager
+{
+    public class PayeeManager : IPayeeRepository
+    {
+        private readonly DatabaseContext _context;
+
+        public PayeeManager(DatabaseContext context)
+        {
+            _context = context;
+        }
+
+        // get all payees
+
+        public async Task<IEnumerable<Payee>> GetAllAsync()
+        {
+            return await _context.Payees.ToListAsync();
+        }
+
+        // get by id
+
+        public async Task<Payee?> GetByIdAsync(int id)
+        {
+            return await _context.Payees.FindAsync(id);
+        }
+
+        // get payees by postcode
+
+        public async Task<IEnumerable<Payee>> GetByPostcodeAsync(string postcode)
+        {
+            return await _context.Payees
+                .Where(p => p.Postcode.Contains(postcode))
+                .ToListAsync();
+        }
+
+        // update payee details
+
+        public async Task UpdateAsync(Payee payee)
+        {
+            _context.Entry(payee).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        // block/ unblock bill
+
+        public async Task UpdateBillStatus(int billPayId, StatusType status)
+        {
+            var billPay = await _context.BillPays.FindAsync(billPayId);
+
+            billPay.Status = status;
+            _context.Entry(billPay).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+    }
+}
