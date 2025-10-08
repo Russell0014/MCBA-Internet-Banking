@@ -3,9 +3,10 @@ using System.ComponentModel.DataAnnotations;
 using Xunit;
 
 namespace MCBA.Tests.Models;
-
+// Tests for BillPay model
 public class BillPayTests
 {
+    // test a bill pay can be created with valid data
     [Fact]
     public void BillPay_CanBeCreated_WithValidData()
     {
@@ -30,6 +31,7 @@ public class BillPayTests
         Assert.Equal(StatusType.Pending, billPay.Status);
     }
 
+// test ammount accepts valid positive values
     [Theory]
     [InlineData(0.01)]
     [InlineData(1.00)]
@@ -55,6 +57,7 @@ public class BillPayTests
         Assert.Empty(validationResults);
     }
 
+// test ammount accepts maximum decimal value
     [Fact]
     public void Amount_AcceptsMaximumDecimalValue()
     {
@@ -77,6 +80,7 @@ public class BillPayTests
         Assert.Empty(validationResults);
     }
 
+// test ammount rejects invalid zero or negative values
     [Theory]
     [InlineData(0.00)]
     [InlineData(-1.00)]
@@ -103,6 +107,7 @@ public class BillPayTests
         Assert.Contains(validationResults, v => v.ErrorMessage.Contains("Must be a positive value"));
     }
 
+// test period accepts valid enum values
     [Theory]
     [InlineData(PeriodType.OneOff)]
     [InlineData(PeriodType.Monthly)]
@@ -127,6 +132,7 @@ public class BillPayTests
         Assert.Empty(validationResults);
     }
 
+// test status accepts valid enum values
     [Theory]
     [InlineData(StatusType.Completed)]
     [InlineData(StatusType.Pending)]
@@ -153,6 +159,7 @@ public class BillPayTests
         Assert.Empty(validationResults);
     }
 
+// test period type accepts only defined enum values
     [Fact]
     public void PeriodType_HasCorrectEnumValues()
     {
@@ -161,6 +168,7 @@ public class BillPayTests
         Assert.Equal(2, (int)PeriodType.Monthly);
     }
 
+// test status type accepts only defined enum values
     [Fact]
     public void StatusType_HasCorrectEnumValues()
     {
@@ -171,6 +179,7 @@ public class BillPayTests
         Assert.Equal(4, (int)StatusType.Blocked);
     }
 
+// test period type has correct display names
     [Fact]
     public void PeriodType_HasCorrectDisplayNames()
     {
@@ -189,6 +198,7 @@ public class BillPayTests
         Assert.Null(monthlyDisplay);
     }
 
+// test navigation properties can be set and retrieved
     [Fact]
     public void NavigationProperties_CanBeSet()
     {
@@ -236,6 +246,7 @@ public class BillPayTests
         Assert.Null(billPay.Payee);
     }
 
+// test ScheduleTimeUtc can be set to past and future dates
     [Fact]
     public void ScheduleTimeUtc_CanBeSetToPastAndFuture()
     {

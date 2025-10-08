@@ -9,6 +9,7 @@ using Moq;
 
 namespace MCBA.Tests.Controllers;
 
+// Tests for LoginController
 public class LoginControllerTests : IDisposable
 {
     private readonly DatabaseContext _context;
@@ -28,7 +29,7 @@ public class LoginControllerTests : IDisposable
 
         SeedData.Initialize(serviceProvider);
 
-        // Note: Logins are seeded with customers
+        // Logins are seeded with customers
     }
 
     private LoginController CreateController()
@@ -48,6 +49,7 @@ public class LoginControllerTests : IDisposable
         return controller;
     }
 
+    // Test that GET /Login returns view when not logged in
     [Fact]
     public void Login_Get_NotLoggedIn_ReturnsView()
     {
@@ -61,6 +63,7 @@ public class LoginControllerTests : IDisposable
         Assert.IsType<ViewResult>(result);
     }
 
+    // Test that GET /Login redirects to Customer/Index when logged in
     [Fact]
     public void Login_Get_LoggedIn_RedirectsToCustomer()
     {
@@ -78,6 +81,7 @@ public class LoginControllerTests : IDisposable
         Assert.Equal("Customer", redirectResult.ControllerName);
     }
 
+    // Test that POST /Login with valid credentials sets session and redirects to Customer/Index
     [Fact]
     public async Task Login_Post_ValidLogin_SetsSessionAndRedirects()
     {
@@ -99,6 +103,7 @@ public class LoginControllerTests : IDisposable
         Assert.NotNull(session!.GetInt32("CustomerId"));
     }
 
+    // Test that POST /Login with invalid credentials returns view with error
     [Fact]
     public async Task Login_Post_InvalidLogin_ReturnsViewWithError()
     {
@@ -118,6 +123,7 @@ public class LoginControllerTests : IDisposable
         Assert.Equal(loginId, model.LoginId);
     }
 
+    // Test that POST /Login with empty loginId returns view with error
     [Fact]
     public async Task Login_Post_EmptyPassword_ReturnsViewWithError()
     {

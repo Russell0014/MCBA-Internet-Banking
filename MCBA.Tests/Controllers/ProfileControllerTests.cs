@@ -12,6 +12,7 @@ using Xunit;
 
 namespace MCBA.Tests.Controllers;
 
+// Tests for ProfileController
 public class ProfileControllerTests : IDisposable
 {
     private readonly DatabaseContext _context;
@@ -53,6 +54,7 @@ public class ProfileControllerTests : IDisposable
         return controller;
     }
 
+   // test that index returns view with ProfileViewModel
     [Fact]
     public void Index_Get_ReturnsViewWithProfileViewModel()
     {
@@ -70,6 +72,7 @@ public class ProfileControllerTests : IDisposable
         Assert.NotNull(model.Name);
     }
 
+// test that index returns NotFound when customer does not exist
     [Fact]
     public void Index_Get_CustomerNotFound_ReturnsNotFound()
     {
@@ -84,6 +87,7 @@ public class ProfileControllerTests : IDisposable
         Assert.IsType<NotFoundResult>(result);
     }
 
+// test that edit get returns view with ProfileViewModel
     [Fact]
     public async Task Edit_Get_ReturnsViewWithProfileViewModel()
     {
@@ -101,6 +105,7 @@ public class ProfileControllerTests : IDisposable
         Assert.NotNull(model.Name);
     }
 
+// test that edit get returns NotFound when customer does not exist
     [Fact]
     public async Task Edit_Get_CustomerNotFound_ReturnsNotFound()
     {
@@ -115,6 +120,7 @@ public class ProfileControllerTests : IDisposable
         Assert.IsType<NotFoundResult>(result);
     }
 
+// test that edit post with valid model updates customer and redirects to index
     [Fact]
     public async Task Edit_Post_ValidModel_UpdatesCustomerAndRedirects()
     {
@@ -151,6 +157,7 @@ public class ProfileControllerTests : IDisposable
         Assert.Equal("0412 345 678", customer.Mobile);
     }
 
+// test that edit post with invalid model state returns view with model
     [Fact]
     public async Task Edit_Post_InvalidModelState_ReturnsViewWithModel()
     {
@@ -174,7 +181,7 @@ public class ProfileControllerTests : IDisposable
         Assert.Equal(model, viewResult.Model);
         Assert.False(controller.ModelState.IsValid);
     }
-
+// test that edit post returns NotFound when customer does not exist
     [Fact]
     public async Task Edit_Post_CustomerNotFound_ReturnsNotFound()
     {
@@ -196,6 +203,8 @@ public class ProfileControllerTests : IDisposable
         Assert.IsType<NotFoundResult>(result);
     }
 
+
+// test that edit post validates state format
     [Fact]
     public async Task Edit_Post_ValidatesStateFormat()
     {
@@ -222,6 +231,8 @@ public class ProfileControllerTests : IDisposable
         Assert.Contains(validationResults, v => v.MemberNames.Contains("State"));
     }
 
+
+// test that edit post validates postcode format
     [Fact]
     public async Task Edit_Post_ValidatesPostCodeFormat()
     {
@@ -248,6 +259,7 @@ public class ProfileControllerTests : IDisposable
         Assert.Contains(validationResults, v => v.MemberNames.Contains("PostCode"));
     }
 
+// test that edit post validates mobile format
     [Fact]
     public async Task Edit_Post_ValidatesMobileFormat()
     {
@@ -274,6 +286,8 @@ public class ProfileControllerTests : IDisposable
         Assert.Contains(validationResults, v => v.MemberNames.Contains("Mobile"));
     }
 
+
+// test that edit post accepts valid Australian mobile format
     [Fact]
     public async Task Edit_Post_AcceptsValidAustralianMobile()
     {
@@ -299,6 +313,8 @@ public class ProfileControllerTests : IDisposable
         Assert.DoesNotContain(validationResults, v => v.MemberNames.Contains("Mobile"));
     }
 
+
+// test that edit post accepts all valid Australian states
     [Fact]
     public async Task Edit_Post_AcceptsAllValidAustralianStates()
     {
@@ -325,6 +341,7 @@ public class ProfileControllerTests : IDisposable
         }
     }
 
+// test that edit post updates only provided fields, leaving others unchanged
     [Fact]
     public async Task Edit_Post_UpdatesOnlyProvidedFields()
     {

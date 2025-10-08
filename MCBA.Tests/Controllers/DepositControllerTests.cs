@@ -11,6 +11,7 @@ using Moq;
 using Xunit;
 
 namespace MCBA.Tests.Controllers;
+// Tests for DepositController
 
 public class DepositControllerTests : IDisposable
 {
@@ -53,6 +54,7 @@ public class DepositControllerTests : IDisposable
         return controller;
     }
 
+   // test that index returns view with DepositViewModel
     [Fact]
     public async Task Index_Get_ReturnsViewWithDepositViewModel()
     {
@@ -68,6 +70,8 @@ public class DepositControllerTests : IDisposable
         var model = Assert.IsType<DepositViewModel>(viewResult.Model);
         Assert.NotNull(model.Accounts);
     }
+
+    // test that index post with valid model creates transaction and redirects
     [Fact]
     public async Task Index_Post_ValidModel_CreatesTransactionAndRedirects()
     {
@@ -105,6 +109,7 @@ public class DepositControllerTests : IDisposable
         Assert.NotNull(controller.TempData["SuccessMessage"]);
     }
 
+    // test that index post with invalid account number returns view with error
     [Fact]
     public async Task Index_Post_InvalidAccountNumber_ReturnsViewWithError()
     {
@@ -126,6 +131,7 @@ public class DepositControllerTests : IDisposable
         Assert.Equal("Account not found.", controller.TempData["ErrorMessage"]);
     }
 
+    // test that index post with non-positive amount returns view with error
     [Fact]
     public async Task Index_Post_AmountNotPositive_ReturnsViewWithError()
     {
@@ -147,6 +153,7 @@ public class DepositControllerTests : IDisposable
         Assert.Equal("Deposit amount must be greater than zero.", controller.TempData["ErrorMessage"]);
     }
 
+    // test that index post with amount greater than balance returns view with error
     [Fact]
     public async Task Index_Post_InsufficientFunds_ReturnsViewWithError()
     {

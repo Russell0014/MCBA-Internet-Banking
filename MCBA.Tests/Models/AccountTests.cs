@@ -3,9 +3,10 @@ using System.ComponentModel.DataAnnotations;
 using Xunit;
 
 namespace MCBA.Tests.Models;
-
+// Tests for Account model
 public class AccountTests
 {
+    // test an account can be created with valid data
     [Fact]
     public void Account_CanBeCreated_WithValidData()
     {
@@ -25,6 +26,7 @@ public class AccountTests
         Assert.Equal(1000.00m, account.Balance);
     }
 
+// test input account number when its valid
     [Theory]
     [InlineData(1234)]
     [InlineData(9999)]
@@ -46,6 +48,7 @@ public class AccountTests
         Assert.Empty(validationResults);
     }
 
+// test input account number when its invalid (not 4 digits with edge cases)
     [Theory]
     [InlineData(123)]     // 3 digits
     [InlineData(12345)]   // 5 digits
@@ -68,6 +71,7 @@ public class AccountTests
         Assert.Contains(validationResults, v => v.ErrorMessage.Contains("Must be exactly 4 digits"));
     }
 
+// test account type when its valid
     [Theory]
     [InlineData(AccountType.Checking)]
     [InlineData(AccountType.Savings)]
@@ -89,6 +93,7 @@ public class AccountTests
         Assert.Empty(validationResults);
     }
 
+// test that balance accepts valid decimal values
     [Fact]
     public void Balance_AcceptsValidDecimalValues()
     {
@@ -109,6 +114,7 @@ public class AccountTests
         Assert.Equal(100.50m, account.Balance);
     }
 
+// test that balance rejects negative decimal values
     [Fact]
     public void NavigationProperties_CanBeSet()
     {

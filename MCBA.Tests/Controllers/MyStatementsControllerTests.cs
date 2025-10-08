@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace MCBA.Tests.Controllers;
 
+// Tests for MyStatementsController
 public class MyStatementsControllerTests : IDisposable
 {
     private readonly DatabaseContext _context;
@@ -47,6 +48,7 @@ public class MyStatementsControllerTests : IDisposable
         return controller;
     }
 
+    // test that Details returns view with MyStatementsViewModel when account exists and belongs to customer
     [Fact]
     public async Task Details_ReturnsViewWithPagedTransactions_WhenAccountExistsAndBelongsToCustomer()
     {
@@ -66,6 +68,7 @@ public class MyStatementsControllerTests : IDisposable
         Assert.True(model.Transactions.PageNumber == 1);
     }
 
+    // test that Details returns view with MyStatementsViewModel when account exists and belongs to customer, on second page
     [Fact]
     public async Task Details_ReturnsViewWithPagedTransactions_OnSecondPage()
     {
@@ -85,6 +88,7 @@ public class MyStatementsControllerTests : IDisposable
         Assert.Equal(page, model.Transactions.PageNumber);
     }
 
+    // test that Details returns NotFound when account does not exist
     [Fact]
     public async Task Details_ReturnsNotFound_WhenAccountDoesNotExist()
     {
@@ -101,6 +105,7 @@ public class MyStatementsControllerTests : IDisposable
         Assert.Equal("Account not found or you don't have access to it.", notFoundResult.Value);
     }
 
+    // test that Details returns NotFound when account exists but belongs to different customer
     [Fact]
     public async Task Details_ReturnsNotFound_WhenAccountBelongsToDifferentCustomer()
     {
@@ -117,6 +122,7 @@ public class MyStatementsControllerTests : IDisposable
         Assert.Equal("Account not found or you don't have access to it.", notFoundResult.Value);
     }
 
+    // test that Details returns NotFound when customer does not exist
     [Fact]
     public async Task Details_ReturnsNotFound_WhenCustomerDoesNotExist()
     {

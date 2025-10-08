@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 namespace MCBA.Tests.Controllers;
 
+// Tests for CustomerController
 public class CustomerControllerTests : IDisposable
 {
     private readonly DatabaseContext _context;
@@ -45,6 +46,7 @@ public class CustomerControllerTests : IDisposable
         return controller;
     }
 
+    // test that index returns customer when customer exists
     [Fact]
     public async Task Index_ReturnsViewWithCustomer_WhenCustomerExists()
     {
@@ -65,6 +67,7 @@ public class CustomerControllerTests : IDisposable
         Assert.Equal(customerId, model.CustomerId);
     }
 
+    // test that index returns null when customer does not exist
     [Fact]
     public async Task Index_ReturnsViewWithNull_WhenCustomerDoesNotExist()
     {
@@ -80,6 +83,7 @@ public class CustomerControllerTests : IDisposable
         Assert.Null(viewResult.Model);
     }
 
+    // test that index throws exception when session customerId is null
     [Fact]
     public async Task Index_ThrowsException_WhenSessionCustomerIdIsNull()
     {

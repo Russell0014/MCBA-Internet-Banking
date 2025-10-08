@@ -1,4 +1,4 @@
-using MCBA.Controllers;
+﻿using MCBA.Controllers;
 using MCBA.Data;
 using MCBA.Models;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +11,7 @@ using Xunit;
 
 namespace MCBA.Tests.Controllers;
 
+// Tests for WithdrawController
 public class WithdrawControllerTests : IDisposable
 {
     private readonly DatabaseContext _context;
@@ -52,6 +53,7 @@ public class WithdrawControllerTests : IDisposable
         return controller;
     }
 
+   // Test that Index GET returns view with WithdrawViewModel
     [Fact]
     public void Index_Get_ReturnsViewWithWithdrawViewModel()
     {
@@ -68,6 +70,7 @@ public class WithdrawControllerTests : IDisposable
         Assert.NotNull(model.Accounts);
     }
 
+// Test that Index POST with valid withdrawal successfully withdraws funds
     [Fact]
     public async Task Index_Post_ValidWithdrawal_SuccessfullyWithdrawsFunds()
     {
@@ -102,6 +105,7 @@ public class WithdrawControllerTests : IDisposable
         Assert.True(account.Balance <= initialBalance - withdrawAmount);
     }
 
+// Test that Index POST with insufficient funds returns error
     [Fact]
     public async Task Index_Post_InsufficientFunds_ReturnsError()
     {
@@ -130,6 +134,7 @@ public class WithdrawControllerTests : IDisposable
         Assert.Contains("Insufficient funds", controller.TempData["ErrorMessage"]?.ToString());
     }
 
+// Test that Index POST with invalid amount (zero or negative) returns error
     [Fact]
     public async Task Index_Post_InvalidAmount_ReturnsError()
     {
@@ -172,6 +177,7 @@ public class WithdrawControllerTests : IDisposable
         Assert.Contains("Withdrawal amount must be greater than zero", controller.TempData["ErrorMessage"]?.ToString());
     }
 
+// Test that Index POST with non-existent account returns NotFound
     [Fact]
     public async Task Index_Post_NonExistentAccount_ReturnsNotFound()
     {
@@ -193,6 +199,7 @@ public class WithdrawControllerTests : IDisposable
         Assert.IsType<NotFoundResult>(result);
     }
 
+// Test that Index POST applies fee after free withdrawals are used up
     [Fact]
     public async Task Index_Post_AppliesFeeAfterFreeWithdrawals()
     {
@@ -249,6 +256,7 @@ public class WithdrawControllerTests : IDisposable
         Assert.Equal(TransactionRules.AtmWithdrawFee, serviceChargeTransaction.Amount);
     }
 
+// Test that Index POST allows overdraft up to limit for checking accounts
     [Fact]
     public async Task Index_Post_CheckingAccount_AllowsOverdraftUpToLimit()
     {
@@ -287,6 +295,7 @@ public class WithdrawControllerTests : IDisposable
         }
     }
 
+// Test that Index POST does not allow overdraft for savings accounts
     [Fact]
     public async Task Index_Post_SavingsAccount_DoesNotAllowNegativeBalance()
     {

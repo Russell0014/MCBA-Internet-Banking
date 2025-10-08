@@ -14,6 +14,7 @@ using Xunit;
 
 namespace MCBA.Tests.Controllers;
 
+// Tests for PasswordController
 public class PasswordControllerTests : IDisposable
 {
     private readonly DatabaseContext _context;
@@ -99,6 +100,7 @@ public class PasswordControllerTests : IDisposable
         return controller;
     }
 
+   // test that index returns view with PasswordViewModel
     [Fact]
     public void Index_Get_ReturnsViewWithPasswordViewModel()
     {
@@ -115,6 +117,7 @@ public class PasswordControllerTests : IDisposable
         Assert.Equal(customerId, model.CustomerId);
     }
 
+// test that index post with valid model state changes password and redirects to home index
     [Fact]
     public void Index_Post_InvalidModelState_ReturnsViewWithModel()
     {
@@ -131,6 +134,7 @@ public class PasswordControllerTests : IDisposable
         Assert.Equal(model, viewResult.Model);
     }
 
+// test that index post with valid model state changes password and redirects to home index after login not found
     [Fact]
     public void Index_Post_LoginNotFound_ReturnsNotFound()
     {
@@ -153,6 +157,7 @@ public class PasswordControllerTests : IDisposable
         Assert.IsType<NotFoundResult>(result);
     }
 
+// test that index post with valid model state changes password and redirects to home index
     [Fact]
     public void Index_Post_IncorrectCurrentPassword_ReturnsViewWithError()
     {
@@ -182,6 +187,7 @@ public class PasswordControllerTests : IDisposable
         Assert.Equal("Current password is incorrect.", controller.ModelState["CurrentPassword"].Errors[0].ErrorMessage);
     }
 
+// test that index post with new password same as current returns view with error
     [Fact]
     public void Index_Post_NewPasswordSameAsCurrent_ReturnsViewWithError()
     {
@@ -212,6 +218,7 @@ public class PasswordControllerTests : IDisposable
         Assert.Equal("New password cannot be the same as the current password.", controller.ModelState["NewPassword"].Errors[0].ErrorMessage);
     }
 
+    // test that index post with valid model state changes password and redirects to home index
     [Fact]
     public void Index_Post_ValidPasswordChange_UpdatesPasswordAndReturnsViewWithSuccess()
     {
@@ -243,6 +250,7 @@ public class PasswordControllerTests : IDisposable
         Assert.Equal("Password updated successfully!", controller.TempData["SuccessMessage"]);
     }
 
+    // test that index post with model validation errors returns view with model
     [Fact]
     public void Index_Post_ModelValidationErrors_ReturnsViewWithModel()
     {

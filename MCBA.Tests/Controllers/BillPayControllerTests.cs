@@ -12,6 +12,7 @@ using Xunit;
 
 namespace MCBA.Tests.Controllers;
 
+// Tests for BillPayController
 public class BillPayControllerTests : IDisposable
 {
     private readonly DatabaseContext _context;
@@ -53,6 +54,7 @@ public class BillPayControllerTests : IDisposable
         return controller;
     }
 
+    // test the GET Index action returns the correct view with the correct model
     [Fact]
     public async Task Index_Get_ReturnsViewWithBillPayViewModel()
     {
@@ -69,6 +71,7 @@ public class BillPayControllerTests : IDisposable
         Assert.NotNull(model);
     }
 
+    // test the GET Index action returns bill pays for the customer's accounts
     [Fact]
     public async Task Index_Get_DisplaysBillPaysForCustomerAccounts()
     {
@@ -101,6 +104,7 @@ public class BillPayControllerTests : IDisposable
         Assert.Contains(model.BillPayList, b => b.BillPayId == billPay.BillPayId);
     }
 
+    // test the GET Create action returns the correct view with the correct model
     [Fact]
     public async Task Create_Get_ReturnsViewWithCreateBillPayViewModel()
     {
@@ -119,6 +123,7 @@ public class BillPayControllerTests : IDisposable
         Assert.Equal(PeriodType.OneOff, model.Period);
     }
 
+// test the POST Create action with valid model creates a new bill pay and redirects to Index
     [Fact]
     public async Task Create_Post_ValidBill_CreatesNewBillPayAndRedirects()
     {
@@ -154,6 +159,7 @@ public class BillPayControllerTests : IDisposable
         Assert.Equal(StatusType.Pending, createdBill.Status);
     }
 
+    // test the POST Create action with invalid model state returns the view with the model
     [Fact]
     public async Task Create_Post_InvalidModelState_ReturnsViewWithModel()
     {
@@ -178,6 +184,7 @@ public class BillPayControllerTests : IDisposable
         Assert.False(controller.ModelState.IsValid);
     }
 
+    // test the POST Create action with invalid payee id returns TempData error and the view with the model
     [Fact]
     public async Task Create_Post_InvalidPayeeId_ReturnsTempDataErrorAndView()
     {
@@ -209,6 +216,7 @@ public class BillPayControllerTests : IDisposable
         Assert.Equal(0, billCount);
     }
 
+// test the POST Create action with schedule time in the past returns TempData error and the view with the model
     [Fact]
     public async Task Create_Post_ScheduleTimeInPast_ReturnsTempDataErrorAndView()
     {
@@ -237,6 +245,7 @@ public class BillPayControllerTests : IDisposable
         Assert.Equal("Please enter a schedule time in the future.", controller.TempData["ErrorMessage"]);
     }
 
+    // test the Cancel action with valid bill pay id removes the bill pay and redirects to Index
     [Fact]
     public async Task Cancel_ValidBillPayId_RemovesBillPayAndRedirects()
     {
@@ -272,6 +281,7 @@ public class BillPayControllerTests : IDisposable
         Assert.Null(deletedBill);
     }
 
+    // test the Cancel action with bill pay id that does not belong to the customer does not remove the bill pay
     [Fact]
     public async Task Cancel_BillPayFromDifferentCustomer_DoesNotRemoveBill()
     {
@@ -309,6 +319,7 @@ public class BillPayControllerTests : IDisposable
         Assert.NotNull(existingBill);
     }
 
+    // test the Retry action with valid bill pay id updates status to Pending and redirects to Index
     [Fact]
     public async Task Retry_ValidBillPayId_UpdatesStatusToPendingAndRedirects()
     {
@@ -345,6 +356,7 @@ public class BillPayControllerTests : IDisposable
         Assert.Equal(StatusType.Pending, updatedBill.Status);
     }
 
+    // test the Retry action with bill pay id that does not belong to the customer does not update the status
     [Fact]
     public async Task Retry_BillPayFromDifferentCustomer_DoesNotUpdateStatus()
     {
@@ -383,6 +395,7 @@ public class BillPayControllerTests : IDisposable
         Assert.Equal(StatusType.Failed, existingBill.Status);
     }
 
+    // test the Create POST action with zero amount fails model validation
     [Fact]
     public async Task Create_Post_ZeroAmount_ModelValidationShouldFail()
     {
@@ -413,6 +426,7 @@ public class BillPayControllerTests : IDisposable
         Assert.Contains(validationResults, v => v.MemberNames.Contains("Amount"));
     }
 
+    // test the Create POST action with negative amount fails model validation
     [Fact]
     public async Task Create_Post_NegativeAmount_ModelValidationShouldFail()
     {
@@ -432,7 +446,7 @@ public class BillPayControllerTests : IDisposable
             Period = PeriodType.Monthly
         };
 
-        // Manually validate the model
+        //  validate the model
         var validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(model);
         var validationResults = new List<System.ComponentModel.DataAnnotations.ValidationResult>();
         var isValid = System.ComponentModel.DataAnnotations.Validator.TryValidateObject(

@@ -12,6 +12,7 @@ using Xunit;
 
 namespace MCBA.Tests.Controllers;
 
+// Tests for TransferController
 public class TransferControllerTests : IDisposable
 {
     private readonly DatabaseContext _context;
@@ -53,6 +54,7 @@ public class TransferControllerTests : IDisposable
         return controller;
     }
 
+// test that index returns view with TransferViewModel
     [Fact]
     public void Index_Get_ReturnsViewWithTransferViewModel()
     {
@@ -69,6 +71,7 @@ public class TransferControllerTests : IDisposable
         Assert.NotNull(model.Accounts);
     }
 
+// test that post index with valid transfer updates balances and redirects
     [Fact]
     public async Task Index_Post_ValidTransfer_SuccessfullyTransfersFunds()
     {
@@ -110,6 +113,7 @@ public class TransferControllerTests : IDisposable
         Assert.Equal(initialDestBalance + transferAmount, destAccount.Balance);
     }
 
+// test that post index with insufficient funds returns error
     [Fact]
     public async Task Index_Post_InsufficientFunds_ReturnsError()
     {
@@ -140,6 +144,7 @@ public class TransferControllerTests : IDisposable
         Assert.Contains("Insufficient funds", controller.TempData["ErrorMessage"]?.ToString());
     }
 
+// test that post index with same source and destination account returns error
     [Fact]
     public async Task Index_Post_TransferToSameAccount_ReturnsError()
     {
@@ -166,6 +171,7 @@ public class TransferControllerTests : IDisposable
         Assert.Contains("Cannot transfer to the same account", controller.TempData["ErrorMessage"]?.ToString());
     }
 
+// test that post index with invalid destination account returns error
     [Fact]
     public async Task Index_Post_InvalidDestinationAccount_ReturnsError()
     {
@@ -192,6 +198,7 @@ public class TransferControllerTests : IDisposable
         Assert.Contains("Invalid Destination Account", controller.TempData["ErrorMessage"]?.ToString());
     }
 
+// test that post index with invalid amount returns error
     [Fact]
     public async Task Index_Post_InvalidAmount_ReturnsError()
     {
@@ -237,6 +244,7 @@ public class TransferControllerTests : IDisposable
         Assert.Contains("Amount must be greater than zero", controller.TempData["ErrorMessage"]?.ToString());
     }
 
+// test that post index applies fee after 2 free transfers
     [Fact]
     public async Task Index_Post_AppliesFeeAfterFreeTransfers()
     {
