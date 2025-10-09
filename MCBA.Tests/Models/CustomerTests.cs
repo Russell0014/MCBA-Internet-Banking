@@ -6,6 +6,7 @@ namespace MCBA.Tests.Models;
 
 public class CustomerTests
 {
+    // test a customer can be created with valid data
     [Fact]
     public void Customer_CanBeCreated_WithValidData()
     {
@@ -33,6 +34,7 @@ public class CustomerTests
         Assert.Equal("0412 345 678", customer.Mobile);
     }
 
+// test a customer can be created with minimum required data
     [Fact]
     public void Customer_CanBeCreated_WithMinimumRequiredData()
     {
@@ -54,6 +56,7 @@ public class CustomerTests
         Assert.Null(customer.Mobile);
     }
 
+    // Helper method to validate a model
     [Theory]
     [InlineData(1234)]
     [InlineData(9999)]
