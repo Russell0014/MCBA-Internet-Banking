@@ -6,6 +6,7 @@ namespace MCBA.Tests.Models;
 
 public class PayeeTests
 {
+    // test a payee can be created with valid data
     [Fact]
     public void Payee_CanBeCreated_WithValidData()
     {
@@ -49,6 +50,7 @@ public class PayeeTests
         Assert.Empty(validationResults);
     }
 
+    // test input phone when its invalid (not in valid Australian format with edge cases)
     [Theory]
     [InlineData("0412345678")]
     [InlineData("(04)12345678")]

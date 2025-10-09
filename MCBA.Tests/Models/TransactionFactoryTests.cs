@@ -6,6 +6,7 @@ namespace MCBA.Tests.Models;
 
 public class TransactionFactoryTests
 {
+    // test CreateTransaction method for each transaction type
     [Fact]
     public void CreateTransaction_WithWithdrawType_ReturnsWithdrawTransaction()
     {
@@ -25,6 +26,7 @@ public class TransactionFactoryTests
         Assert.Equal(comment, transaction.Comment);
     }
 
+    // test CreateTransaction method for each transaction type
     [Fact]
     public void CreateTransaction_WithDepositType_ReturnsDepositTransaction()
     {
@@ -44,6 +46,7 @@ public class TransactionFactoryTests
         Assert.Equal(comment, transaction.Comment);
     }
 
+    // test CreateTransaction method for each transaction type
     [Fact]
     public void CreateTransaction_WithTransferType_ReturnsTransferTransaction()
     {
@@ -66,6 +69,7 @@ public class TransactionFactoryTests
         Assert.Equal(destinationAccountNumber, transaction.DestinationAccount.AccountNumber);
     }
 
+    // test CreateTransaction method for each transaction type
     [Fact]
     public void CreateTransaction_WithBillPayType_ReturnsBillPayTransaction()
     {
@@ -85,6 +89,7 @@ public class TransactionFactoryTests
         Assert.Equal(comment, transaction.Comment);
     }
 
+// test CreateTransaction method throws exception with no destination account for transfer type
     [Fact]
     public void CreateTransaction_WithTransferType_ThrowsException_WhenCalledWithoutDestination()
     {
@@ -99,6 +104,8 @@ public class TransactionFactoryTests
         Assert.Contains("Transfer transactions require a destination account", exception.Message);
     }
 
+
+// test CreateTransaction method throws exception for invalid type
     [Fact]
     public void CreateTransaction_WithInvalidType_ThrowsException()
     {
@@ -113,6 +120,8 @@ public class TransactionFactoryTests
 
         Assert.Contains("Invalid transaction type", exception.Message);
     }
+
+// test CreateTransaction method with overload that includes destination account number
 
     [Fact]
     public void CreateTransaction_Overload_WithDestinationAccountNumber_WorksForAllTypes()
@@ -140,6 +149,7 @@ public class TransactionFactoryTests
         Assert.IsType<BillPayTransaction>(billPayTransaction);
     }
 
+    // test CreateTransaction method with null comment
     [Fact]
     public void CreateTransaction_CommentCanBeNull()
     {

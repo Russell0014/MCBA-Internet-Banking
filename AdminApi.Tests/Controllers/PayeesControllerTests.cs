@@ -28,6 +28,7 @@ namespace AdminApi.Tests.Controllers
             }
         }
 
+// test that GetPayees returns all payees
         [Fact]
         public async Task GetPayeesByPostcode_Returns_Matching()
         {
@@ -38,6 +39,7 @@ namespace AdminApi.Tests.Controllers
             Assert.Equal(2, list.Count());
         }
 
+// test that GetPayee returns a payee by id
         [Fact]
         public async Task GetPayee_Returns_Payee()
         {

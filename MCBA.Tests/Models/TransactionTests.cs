@@ -6,6 +6,7 @@ namespace MCBA.Tests.Models;
 
 public class TransactionTests
 {
+    // test a transaction can be created with valid data
     [Fact]
     public void Transaction_CanBeCreated_WithValidData()
     {
@@ -59,6 +60,7 @@ public class TransactionTests
         Assert.Empty(validationResults);
     }
 
+// test transaction type has correct enum values
     [Fact]
     public void TransactionType_HasCorrectEnumValues()
     {
@@ -145,6 +147,7 @@ public class TransactionTests
         Assert.Equal(comment, transaction.Comment);
     }
 
+// test a comment can be null
     [Fact]
     public void Comment_CanBeNull()
     {
@@ -209,6 +212,7 @@ public class TransactionTests
         Assert.Null(transaction.DestinationAccountNumber);
     }
 
+// test destination account number can be null when its a deposit
     [Fact]
     public void DestinationAccountNumber_CanBeNull()
     {

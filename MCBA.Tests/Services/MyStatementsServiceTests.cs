@@ -22,6 +22,8 @@ public class MyStatementsServiceTests : IDisposable
         _service = new MyStatementsService(_context);
     }
 
+    // test that GetCustomerAsync returns a customer when given an existing customerId
+
     [Fact]
     public async Task GetCustomerAsync_ExistingCustomer_ReturnsCustomer()
     {

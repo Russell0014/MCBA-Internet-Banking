@@ -18,6 +18,7 @@ namespace AdminApi.Tests.Controllers
             public Task UpdateBillStatusAsync(int billPayId, StatusType status) => throw new InvalidOperationException("bad state");
         }
 
+//test that blocking a bill returns NoContent on success
         [Fact]
         public async Task BlockBill_Returns_NoContent_OnSuccess()
         {
@@ -26,6 +27,7 @@ namespace AdminApi.Tests.Controllers
             Assert.IsType<NoContentResult>(result);
         }
 
+//test that blocking a bill returns BadRequest on repository invalid operation
         [Fact]
         public async Task BlockBill_Returns_BadRequest_OnRepoInvalidOperation()
         {
