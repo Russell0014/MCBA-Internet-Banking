@@ -54,7 +54,7 @@ public class TransferControllerTests : IDisposable
         return controller;
     }
 
-// test that index returns view with TransferViewModel
+    // test that index returns view with TransferViewModel
     [Fact]
     public void Index_Get_ReturnsViewWithTransferViewModel()
     {
@@ -71,7 +71,7 @@ public class TransferControllerTests : IDisposable
         Assert.NotNull(model.Accounts);
     }
 
-// test that post index with valid transfer updates balances and redirects
+    // test that post index with valid transfer updates balances and redirects
     [Fact]
     public async Task Index_Post_ValidTransfer_SuccessfullyTransfersFunds()
     {
@@ -89,7 +89,7 @@ public class TransferControllerTests : IDisposable
         var model = new TransferViewModel
         {
             AccountNumber = sourceAccount.AccountNumber,
-            DestAccountNumber = destAccount.AccountNumber,
+            DestAccountNumber = destAccount.AccountNumber.ToString(),
             Amount = transferAmount,
             Comment = "Test transfer"
         };
@@ -113,7 +113,7 @@ public class TransferControllerTests : IDisposable
         Assert.Equal(initialDestBalance + transferAmount, destAccount.Balance);
     }
 
-// test that post index with insufficient funds returns error
+    // test that post index with insufficient funds returns error
     [Fact]
     public async Task Index_Post_InsufficientFunds_ReturnsError()
     {
@@ -130,7 +130,7 @@ public class TransferControllerTests : IDisposable
         var model = new TransferViewModel
         {
             AccountNumber = sourceAccount.AccountNumber,
-            DestAccountNumber = destAccount.AccountNumber,
+            DestAccountNumber = destAccount.AccountNumber.ToString(),
             Amount = transferAmount,
             Comment = "Test transfer"
         };
@@ -144,7 +144,7 @@ public class TransferControllerTests : IDisposable
         Assert.Contains("Insufficient funds", controller.TempData["ErrorMessage"]?.ToString());
     }
 
-// test that post index with same source and destination account returns error
+    // test that post index with same source and destination account returns error
     [Fact]
     public async Task Index_Post_TransferToSameAccount_ReturnsError()
     {
@@ -157,7 +157,7 @@ public class TransferControllerTests : IDisposable
         var model = new TransferViewModel
         {
             AccountNumber = sourceAccount.AccountNumber,
-            DestAccountNumber = sourceAccount.AccountNumber, // Same account
+            DestAccountNumber = sourceAccount.AccountNumber.ToString(), // Same account
             Amount = 50m,
             Comment = "Test transfer"
         };
@@ -171,7 +171,7 @@ public class TransferControllerTests : IDisposable
         Assert.Contains("Cannot transfer to the same account", controller.TempData["ErrorMessage"]?.ToString());
     }
 
-// test that post index with invalid destination account returns error
+    // test that post index with invalid destination account returns error
     [Fact]
     public async Task Index_Post_InvalidDestinationAccount_ReturnsError()
     {
@@ -184,7 +184,7 @@ public class TransferControllerTests : IDisposable
         var model = new TransferViewModel
         {
             AccountNumber = sourceAccount.AccountNumber,
-            DestAccountNumber = 9999, // Non-existent account
+            DestAccountNumber = "9999", // Non-existent account
             Amount = 50m,
             Comment = "Test transfer"
         };
@@ -195,10 +195,10 @@ public class TransferControllerTests : IDisposable
         // Assert
         var redirectResult = Assert.IsType<RedirectToActionResult>(result);
         Assert.NotNull(controller.TempData["ErrorMessage"]);
-        Assert.Contains("Invalid Destination Account", controller.TempData["ErrorMessage"]?.ToString());
+        Assert.Contains("Invalid destination account number.", controller.TempData["ErrorMessage"]?.ToString());
     }
 
-// test that post index with invalid amount returns error
+    // test that post index with invalid amount returns error
     [Fact]
     public async Task Index_Post_InvalidAmount_ReturnsError()
     {
@@ -213,7 +213,7 @@ public class TransferControllerTests : IDisposable
         var zeroModel = new TransferViewModel
         {
             AccountNumber = sourceAccount.AccountNumber,
-            DestAccountNumber = destAccount.AccountNumber,
+            DestAccountNumber = destAccount.AccountNumber.ToString(),
             Amount = 0m,
             Comment = "Test transfer"
         };
@@ -230,7 +230,7 @@ public class TransferControllerTests : IDisposable
         var negativeModel = new TransferViewModel
         {
             AccountNumber = sourceAccount.AccountNumber,
-            DestAccountNumber = destAccount.AccountNumber,
+            DestAccountNumber = destAccount.AccountNumber.ToString(),
             Amount = -50m,
             Comment = "Test transfer"
         };
@@ -244,7 +244,7 @@ public class TransferControllerTests : IDisposable
         Assert.Contains("Amount must be greater than zero", controller.TempData["ErrorMessage"]?.ToString());
     }
 
-// test that post index applies fee after 2 free transfers
+    // test that post index applies fee after 2 free transfers
     [Fact]
     public async Task Index_Post_AppliesFeeAfterFreeTransfers()
     {
@@ -261,7 +261,7 @@ public class TransferControllerTests : IDisposable
             var freeModel = new TransferViewModel
             {
                 AccountNumber = sourceAccount.AccountNumber,
-                DestAccountNumber = destAccount.AccountNumber,
+                DestAccountNumber = destAccount.AccountNumber.ToString(),
                 Amount = 10m,
                 Comment = $"Free transfer {i + 1}"
             };
@@ -276,7 +276,7 @@ public class TransferControllerTests : IDisposable
         var model = new TransferViewModel
         {
             AccountNumber = sourceAccount.AccountNumber,
-            DestAccountNumber = destAccount.AccountNumber,
+            DestAccountNumber = destAccount.AccountNumber.ToString(),
             Amount = transferAmount,
             Comment = "Transfer with fee"
         };
