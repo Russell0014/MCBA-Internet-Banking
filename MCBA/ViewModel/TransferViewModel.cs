@@ -11,7 +11,7 @@ public class TransferViewModel {
 
     [Required(ErrorMessage = "Please enter an destination account.")]
     [RegularExpression(@"^\d{4}$", ErrorMessage = "Account number must be exactly 4 digits.")]
-    public int DestAccountNumber { get; set; }
+    public string DestAccountNumber { get; set; } = string.Empty;
 
     public SelectList? Accounts { get; set; }
     [Required(ErrorMessage = "Amount is required.")]
