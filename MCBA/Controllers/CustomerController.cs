@@ -1,5 +1,4 @@
 ﻿using MCBA.Data;
-using MCBA.Filters;
 using MCBA.Models;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,11 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MCBA.Models;
-using MCBA.Services;
 using MCBA.Data;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using SimpleHashing.Net;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using MCBA.ViewModel;
 
 namespace MCBA.Controllers;

@@ -3,9 +3,6 @@ using MCBA.Models;
 using MCBA.Services;
 using MCBA.Data;
 using MCBA.ViewModel;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using SimpleHashing.Net;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MCBA.Controllers;
