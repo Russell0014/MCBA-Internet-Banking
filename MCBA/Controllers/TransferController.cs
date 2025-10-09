@@ -46,11 +46,18 @@ public class TransferController : Controller
         if (ModelState.IsValid)
         {
             var account = await _context.Accounts.FindAsync(model.AccountNumber); // finds the account based on the account number in the model
-            var destAccount = await _context.Accounts.FindAsync(model.DestAccountNumber); // finds the destination account based on the dest account number in the model
+            var destAccount = await _context.Accounts.FindAsync(int.Parse(model.DestAccountNumber));
+            // finds the destination account based on the dest account number in the model
+
+            if (destAccount == null)
+            {
+                TempData["ErrorMessage"] = "Invalid destination account number.";
+                return RedirectToAction("Index", new { accountNumber = model.AccountNumber });
+            }
 
 
             var transaction = TransactionFactory.CreateTransaction( // creates a withdraw transaction using the factory
-                TransactionType.Transfer, account, model.Amount, model.DestAccountNumber, model.Comment);  // uses the account, amount, dest account, and comment from the model
+                TransactionType.Transfer, account, model.Amount, destAccount.AccountNumber, model.Comment);  // uses the account, amount, dest account, and comment from the model
 
             // Assign the tracked destination account
             transaction.DestinationAccount = destAccount;

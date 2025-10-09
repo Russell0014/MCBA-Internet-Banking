@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AdminApi.Tests.Controllers
 {
+    // Tests for BillPaysController
     public class BillPaysControllerTests
     {
         private class SuccessRepo : IBillPayRepository
@@ -18,7 +19,7 @@ namespace AdminApi.Tests.Controllers
             public Task UpdateBillStatusAsync(int billPayId, StatusType status) => throw new InvalidOperationException("bad state");
         }
 
-//test that blocking a bill returns NoContent on success
+        // test that block bill returns no content on success
         [Fact]
         public async Task BlockBill_Returns_NoContent_OnSuccess()
         {
@@ -27,7 +28,7 @@ namespace AdminApi.Tests.Controllers
             Assert.IsType<NoContentResult>(result);
         }
 
-//test that blocking a bill returns BadRequest on repository invalid operation
+        // test that block bill returns bad request on repo invalid operation
         [Fact]
         public async Task BlockBill_Returns_BadRequest_OnRepoInvalidOperation()
         {
