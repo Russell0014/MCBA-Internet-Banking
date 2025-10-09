@@ -39,7 +39,7 @@
 
                     <div class="form-group mb-3">
                         <label asp-for="State" class="form-label"></label>
-                        <input asp-for="State" class="form-control"/>
+                        <input asp-for="State" class="form-control" oninput="this.value = this.value.toUpperCase();"/>
                         <span asp-validation-for="State" class="text-danger"></span>
                     </div>
 
