@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="AdminApi.Tests\AdminApi.Tests.csproj" />
+  <Project Path="AdminApi/AdminApi.csproj" />
+  <Project Path="AdminPortal.Tests\AdminPortal.Tests.csproj" />
+  <Project Path="AdminPortal/AdminPortal.csproj" />
+  <Project Path="MCBA.Tests/MCBA.Tests.csproj" />
+  <Project Path="MCBA/MCBA.csproj" />
+</Solution>
